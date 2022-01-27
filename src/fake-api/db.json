@@ -1,0 +1,226 @@
+{
+  "users": [
+    {
+      "fullName": "Lovely Bug",
+      "username": "lovelybug",
+      "email": "lovelybug@mail.com",
+      "password": "lovelybug",
+      "role": "user",
+      "id": 1
+    },
+    {
+      "fullName": "Cat Girl",
+      "username": "catgirl",
+      "email": "catgirl@mail.com",
+      "password": "catgirl",
+      "role": "user",
+      "id": 2
+    },
+    {
+      "fullName": "Nami",
+      "username": "nami",
+      "email": "nami@mail.com",
+      "password": "nami",
+      "role": "user",
+      "id": 3
+    },
+    {
+      "fullName": "May Who",
+      "username": "maywho",
+      "email": "maywho@mail.com",
+      "password": "maywho",
+      "role": "user",
+      "id": 4
+    },
+    {
+      "fullName": "Riyani May",
+      "username": "riyanimay",
+      "email": "riyanimay@mail.com",
+      "password": "riyanimay",
+      "role": "user",
+      "id": 5
+    },
+    {
+      "fullName": "Honey Bee",
+      "username": "honeybee",
+      "email": "honeybee@mail.com",
+      "password": "honeybee",
+      "role": "admin",
+      "id": 6
+    }
+  ],
+  "transaction": [],
+  "products": [
+    {
+      "id": 1,
+      "productName": "Softcover Diary Book",
+      "price": 35000,
+      "productImage": "/images/softcover-diary.jpg",
+      "description": "Softcover Notebook with Diary Cover Design and Custom Words",
+      "category": "Softcover Notebook"
+    },
+    {
+      "id": 2,
+      "productName": "Softcover Dream Book",
+      "price": 35000,
+      "productImage": "/images/softcover-dream.jpg",
+      "description": "Softcover Notebook with Dream Cover Design and Custom Words",
+      "category": "Softcover Notebook"
+    },
+    {
+      "id": 3,
+      "productName": "Softcover Finance Book",
+      "price": 35000,
+      "productImage": "/images/softcover-finance.jpg",
+      "description": "Softcover Notebook with Finance Cover Design and Custom Words",
+      "category": "Softcover Notebook"
+    },
+    {
+      "id": 4,
+      "productName": "Softcover Harry Potter Book",
+      "price": 35000,
+      "productImage": "/images/softcover-harrypotter.jpg",
+      "description": "Softcover Notebook with Harry Potter Cover Design and Custom Words",
+      "category": "Softcover Notebook"
+    },
+    {
+      "id": 5,
+      "productName": "Softcover Recipe Book",
+      "price": 35000,
+      "productImage": "/images/softcover-recipe.jpg",
+      "description": "Softcover Notebook with Recipe Cover Design and Custom Words",
+      "category": "Softcover Notebook"
+    },
+    {
+      "id": 6,
+      "productName": "Softcover Journal Book",
+      "price": 35000,
+      "productImage": "/images/softcover-journal.jpg",
+      "description": "Softcover Notebook with Journal Cover Design and Custom Words",
+      "category": "Softcover Notebook"
+    },
+    {
+      "id": 7,
+      "productName": "Softcover Sewing Book",
+      "price": 35000,
+      "productImage": "/images/softcover-sewing.jpg",
+      "description": "Softcover Notebook with Sewing Cover Design and Custom Words",
+      "category": "Softcover Notebook"
+    },
+    {
+      "id": 8,
+      "productName": "Softcover Sketch Book",
+      "price": 35000,
+      "productImage": "/images/softcover-sketch.jpg",
+      "description": "Softcover Notebook with Sketch Cover Design and Custom Words",
+      "category": "Softcover Notebook"
+    },
+    {
+      "id": 9,
+      "productName": "Softcover Subject Book",
+      "price": 35000,
+      "productImage": "/images/softcover-subject.jpg",
+      "description": "Softcover Notebook with Sketch Cover Design and Custom Words",
+      "category": "Softcover Notebook"
+    },
+    {
+      "id": 10,
+      "productName": "Softcover Camera Lense Book",
+      "price": 35000,
+      "productImage": "/images/softcover-cameralense.jpg",
+      "description": "Softcover Notebook with Camera Lense Cover Design and Custom Words",
+      "category": "Softcover Notebook"
+    },
+    {
+      "id": 11,
+      "productName": "Spiral Diary Book",
+      "price": 35000,
+      "productImage": "/images/spiral-diary.jpg",
+      "description": "Spiral Notebook with Diary Cover Design and Custom Words",
+      "category": "Spiral Notebook"
+    },
+    {
+      "id": 12,
+      "productName": "Spiral Dream Book",
+      "price": 35000,
+      "productImage": "/images/spiral-dream.jpg",
+      "description": "Spiral Notebook with Dream Cover Design and Custom Words",
+      "category": "Spiral Notebook"
+    },
+    {
+      "id": 13,
+      "productName": "Spiral Finance Book",
+      "price": 35000,
+      "productImage": "/images/spiral-finance.jpg",
+      "description": "Spiral Notebook with Finance Cover Design and Custom Words",
+      "category": "Spiral Notebook"
+    },
+    {
+      "id": 14,
+      "productName": "Spiral Harry Potter Book",
+      "price": 35000,
+      "productImage": "/images/spiral-harrypotter.jpg",
+      "description": "Spiral Notebook with Harry Potter Cover Design and Custom Words",
+      "category": "Spiral Notebook"
+    },
+    {
+      "id": 15,
+      "productName": "Spiral Recipe Book",
+      "price": 35000,
+      "productImage": "/images/spiral-recipe.jpg",
+      "description": "Spiral Notebook with Recipe Cover Design and Custom Words",
+      "category": "Spiral Notebook"
+    },
+    {
+      "id": 16,
+      "productName": "Spiral Journal Book",
+      "price": 35000,
+      "productImage": "/images/spiral-journal.jpg",
+      "description": "Spiral Notebook with Journal Cover Design and Custom Words",
+      "category": "Spiral Notebook"
+    },
+    {
+      "id": 17,
+      "productName": "Spiral Sewing Book",
+      "price": 35000,
+      "productImage": "/images/spiral-sewing.jpg",
+      "description": "Spiral Notebook with Sewing Cover Design and Custom Words",
+      "category": "Spiral Notebook"
+    },
+    {
+      "id": 18,
+      "productName": "Spiral Sketch Book",
+      "price": 35000,
+      "productImage": "/images/spiral-sketch.jpg",
+      "description": "Spiral Notebook with Sketch Cover Design and Custom Words",
+      "category": "Spiral Notebook"
+    },
+    {
+      "id": 19,
+      "productName": "Spiral Subject Book",
+      "price": 35000,
+      "productImage": "/images/spiral-subject.jpg",
+      "description": "Spiral Notebook with Sketch Cover Design and Custom Words",
+      "category": "Spiral Notebook"
+    },
+    {
+      "id": 20,
+      "productName": "Spiral Camera Lense Book",
+      "price": 35000,
+      "productImage": "/images/spiral-cameralense.jpg",
+      "description": "Spiral Notebook with Camera Lense Cover Design and Custom Words",
+      "category": "Spiral Notebook"
+    }
+  ],
+  "carts": [
+    {
+      "userId": 0,
+      "productId": 2,
+      "price": 35000,
+      "productName": "Softcover Dream Book",
+      "productImage": "/images/softcover-dream.jpg",
+      "quantity": 3,
+      "id": 1
+    }
+  ]
+}
