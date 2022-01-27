@@ -1,0 +1,13 @@
+update:
+
+1. protection in regist for email validation, username (alphanumeric with length 8 to 15), password (at least 8 with special characters)
+
+2. add logo
+
+3. change pagination
+
+4. show more product cards at home page
+
+5. add products to another category (still need to add one category at least)
+
+6. hide cart and history page from admin
