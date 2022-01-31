@@ -1,24 +1,31 @@
 import React from "react";
+// import Axios setiap kali terdapat panggilan ke API
 import Axios from "axios";
+// import API_URL krn kita mau data dari halaman url API
 import { API_URL } from "../constants/API";
+// import admin.css utk setelan productImage
 import "../assets/styles/admin.css";
+// import connect utk tahu role yg sdg login sbg user atau admin
 import { connect } from "react-redux";
+// import navigate utk navigate login as user to home page and they can't access admin page
 import { Navigate } from "react-router-dom";
 
 class Admin extends React.Component {
   state = {
-    // untuk menyimpan data add
+    // productList: untuk menyimpan data product list
     productList: [],
 
+    // utk menyimpan input dari form item baru
     addProductName: "",
     addPrice: 0,
     addProductImage: "",
     addDescription: "",
     addCategory: "",
-
-    // untuk edit
+    
+    // default editId, supaya kita tahu ketika edit sebuah produk merupakan item yang mana
     editId: 0,
-
+    
+    // untuk menyimpan input dari form edit
     editProductName: "",
     editPrice: 0,
     editProductImage: "",
@@ -38,6 +45,7 @@ class Admin extends React.Component {
 
   // karena mau digunakan di renderProducts maka sebaiknya ditempatkan di atas renderProducts
   editToggle = (editData) => {
+    // setState dibuat agar ketika edit produk pada form edit, form menampilkan data produk yg akan bisa kita edit
     this.setState({
       editId: editData.id,
       editProductName: editData.productName,
@@ -48,33 +56,43 @@ class Admin extends React.Component {
     });
   };
 
-  // jika edit dicancel maka hasil edit spt semula
+  // jika edit dicancel form edit akan hilang dan data tampil spt semula
   cancelEdit = () => {
     this.setState({ editId: 0 });
   };
-
+  
+  // function utk tombol save ketika edit produk
   saveBtnHandler = () => {
+    // Axios.patch harus memiliki id dari produk yg mau didelete
+    // editId: menyimpan id dari produk yg kita mau edit
     Axios.patch(`${API_URL}/products/${this.state.editId}`, {
+      // key object: field yg kita mau edit, value object: value baru setelah diedit
       productName: this.state.editProductName,
       price: parseInt(this.state.editPrice),
       productImage: this.state.editProductImage,
       description: this.state.editDescription,
       category: this.state.editCategory,
     })
-      .then(() => {
-        this.fetchProducts();
-        this.cancelEdit();
-      })
-      .catch(() => {
-        alert("There is some mistake in server");
-      });
+    .then(() => {
+      // fetchproducts memberikan data terbaru setelah produk diedit
+      this.fetchProducts();
+      // setelah disave, form edit akan hilang dan data tampil spt semula
+      this.cancelEdit();
+    })
+    .catch(() => {
+      alert("There is some mistake in server");
+    });
   };
-
+  
+  // function utk tombol delete
   deleteBtnHandler = (deleteId) => {
+    // using window. bcs without it there will be an error
     const confirmDelete = window.confirm("Are you sure to delete this?");
     if (confirmDelete) {
+      // Axios.delete harus memiliki id dari produk yg mau didelete
       Axios.delete(`${API_URL}/products/${deleteId}`)
-        .then(() => {
+      .then(() => {
+        // fetchproducts memberikan data terbaru setelah produk didelete
           this.fetchProducts();
         })
         .catch(() => {
@@ -154,6 +172,8 @@ class Admin extends React.Component {
           </tr>
         );
       }
+
+      // default tampilan produk list pada admin page
       return (
         <tr>
           <td>{val.id}</td>
@@ -169,8 +189,9 @@ class Admin extends React.Component {
           <td>{val.description}</td>
           <td>{val.category}</td>
           <td>
-            {/* editToggle menerima parameter yaitu id dri produk jadi pada onClick hrs dibungkus dg anonymous function supaya kita bisa kasih parameter yaitu val*/}
+            {/* editToggle menerima parameter yaitu editData dri produk jadi pada onClick hrs dibungkus dg anonymous function supaya kita bisa kasih parameter yaitu val*/}
             <button
+              // val mengirimkan semua key dlm satu object ke editToggle
               onClick={() => this.editToggle(val)}
               className="btn btn-secondary"
             >
@@ -190,18 +211,20 @@ class Admin extends React.Component {
     });
   };
 
+  // function utk menambah produk baru
   addNewProduct = () => {
     Axios.post(`${API_URL}/products`, {
       productName: this.state.addProductName,
+      // parseInt used as protection for price should be number not string
       price: parseInt(this.state.addPrice),
       productImage: this.state.addProductImage,
       description: this.state.addDescription,
       category: this.state.addCategory,
     })
       .then(() => {
-        // refresh dg data terbaru
+        // fetchproducts memberikan data terbaru setelah add new product sehingga new item muncul
         this.fetchProducts();
-        // reset form menjadi kosong kembali setelah memberikan value di input form
+        // utk reset form produk baru menjadi kosong kembali setelah menambah produk
         this.setState({
           addProductName: "",
           addPrice: 0,
@@ -216,20 +239,26 @@ class Admin extends React.Component {
   };
 
   inputHandler = (event) => {
+    // value: storage of input users from admin page
+    // name: to recognize the incoming values from which input
     const { name, value } = event.target;
 
+    // name using square brackets to make the objects sent to setState is dynamic
     this.setState({ [name]: value });
   };
 
+  // utk membuat fetchProducts trigger ketika masuk admin page tanpa mencet apapun
   componentDidMount() {
     this.fetchProducts();
   }
 
   render() {
+    // jika login sbg user maka direturn to home page
     if (this.props.userGlobal.role !== "admin") {
       return <Navigate to="/" />;
     }
 
+    // form input utk new item
     return (
       <div className="p-5">
         <div className="row">

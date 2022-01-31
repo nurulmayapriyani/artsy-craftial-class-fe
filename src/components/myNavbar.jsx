@@ -10,29 +10,52 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+
+// Link: has the same function like tag a but it's from react-router-dom. It has props named "to"
+import { Link, Navigate } from "react-router-dom";
+// connect from react-redux karena kita ingin menunjukkan username di dlm navbar
 import { connect } from "react-redux";
 import { logoutUser } from "../redux/actions/user";
 import logo from "../assets/styles/logo.png";
+import { FaShoppingCart } from 'react-icons/fa';
 
 class MyNavbar extends React.Component {
+
+  state = {
+    navigate: false
+  }
+
+  onLogout = () => {
+    this.props.logoutUser();
+  }
+
   render() {
+    if (this.state.navigate) {
+      this.state.navigate = false;
+      return <Navigate to="/" />;
+    }
+
     return (
       <Navbar color="body" light>
-        <img src= {logo} alt="Logo" style={{
-          height: "60px"
-        }}/>
+
         <NavbarBrand
           tag={Link}
           to="/"
-          className="text-warning font-weight-bold"
+          className="text-warning font-weight-bold text-align-start"
         >
-          Artsy Craftial
+          <img src= {logo} alt="Logo" style={{
+            height: "60px",
+            marginRight: "10px"
+          }}/>
+          <span>
+            Artsy Craftial
+          </span>
         </NavbarBrand>
         <Nav>
+          {/* jika true jalankan yg di dlm react fragment*/}
           {this.props.userGlobal.username ? (
             <>
-              {/*react fragment fungsi spt div.. its comment budu*/}
+              {/*react fragment memiliki fungsi spt div, utk menyatukan dua element terpisah yaitu NavItem & UncontrolledDropdown*/}
               <NavItem
                 style={{
                   marginTop: "auto",
@@ -43,22 +66,31 @@ class MyNavbar extends React.Component {
                   Hello, {this.props.userGlobal.username}
                 </NavbarText>
               </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret className="text-warning">
-                  Pages
-                </DropdownToggle>
-                <DropdownMenu end>
-
-                  {this.props.userGlobal.role !== "admin" ? (
-                    <DropdownItem>
+              <NavItem 
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    marginLeft: "10px"
+                  }}
+              >
+                {this.props.userGlobal.role !== "admin" ? (
                       <Link
                         to="/cart"
                         className="text-decoration-none text-warning"
                       >
-                        Cart ({this.props.cartGlobal.cartList.length})
+                        <FaShoppingCart />
+                        ({this.props.cartGlobal.cartList.length})
                       </Link>
-                    </DropdownItem>
                   ): null}
+              </NavItem>
+              {/* nav to declare if the dropdown is in navbar */}
+              <UncontrolledDropdown nav inNavbar>
+                {/* caret to give a small arrow */}
+                <DropdownToggle nav caret className="text-warning">
+                  Pages
+                </DropdownToggle>
+                {/* to make align dropdown menu move to left so they can compeletely show not cut*/}
+                <DropdownMenu end>
 
                   {this.props.userGlobal.role !== "admin" ? (
                     <DropdownItem>
@@ -71,7 +103,7 @@ class MyNavbar extends React.Component {
                     </DropdownItem>
                   ): null}
 
-
+                  {/* hanya jika login sbg admin yg dpt melihat dan masuk ke admin page */}
                   {this.props.userGlobal.role === "admin" ? (
                     <DropdownItem>
                       <Link
@@ -82,22 +114,25 @@ class MyNavbar extends React.Component {
                       </Link>
                     </DropdownItem>
                   ) : null}
-
+                  
+                  {/* divider: memberikan garis tipis pemisah antara dropdown item sebelumnya */}
                   <DropdownItem divider />
                   <DropdownItem
                     className="text-warning"
-                    onClick={this.props.logoutUser}
+                    onClick={this.onLogout}
                   >
                     Logout
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </>
+            // jika salah jalankan yg di dlm kurung setelah titik dua
           ) : (
             <NavItem>
               <NavbarText>
-                <Link to="/login">Login</Link> |{" "}
-                <Link to="/register">Register</Link>
+                {/* Link memiliki default display inline */}
+                <Link className="text-warning text-decoration-none" to="/login">Login</Link> |{" "}
+                <Link className="text-warning text-decoration-none" to="/register">Register</Link>
               </NavbarText>
             </NavItem>
           )}

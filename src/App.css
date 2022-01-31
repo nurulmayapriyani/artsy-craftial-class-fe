@@ -1,13 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quintessential&display=swap");
+
 .App {
   text-align: center;
-  min-height: 100%;
+  min-height: 100vh;
   width: 100%;
   margin: 0;
+  font-family: "Quintessential", cursive;
+  display: flex;
+  /* background-image: image("./assets/main_bg.jpg"); */
+  flex-direction: column;
+  background-image: linear-gradient(
+    130.3deg,
+    rgba(152, 76, 32, 1) 11.6%,
+    rgba(209, 154, 48, 1) 25.7%,
+    rgba(205, 118, 48, 1) 35.6%,
+    rgba(233, 178, 16, 1) 42.1%,
+    rgba(205, 118, 48, 1) 66.7%,
+    rgba(209, 154, 48, 1) 78.7%,
+    rgba(152, 76, 32, 1) 99.8%
+  );
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.bg-image {
+  position: fixed;
+  bottom: 0px;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  object-fit: cover;
+  z-index: -1;
 }
 
 @media (prefers-reduced-motion: no-preference) {

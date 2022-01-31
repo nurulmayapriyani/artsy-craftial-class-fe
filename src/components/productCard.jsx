@@ -1,5 +1,6 @@
 import React from "react";
 import "../assets/styles/productCard.css";
+// import Link krn menggunakan tag Link
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Axios from "axios";
@@ -24,11 +25,11 @@ class ProductCard extends React.Component {
           quantity: result.data[0].quantity + 1,
         })
           .then(() => {
-            alert("Berhasil menambahkan barang");
+            ("Item added successfully");
             this.props.getCartData(this.props.userGlobal.id);
           })
           .catch(() => {
-            alert("Terjadi kesalahan di server");
+            alert("There is some mistake in server");
           });
       } else {
         // Jika barangnya belum ada di cart user
@@ -41,11 +42,11 @@ class ProductCard extends React.Component {
           quantity: 1,
         })
           .then(() => {
-            alert("Berhasil menambahkan barang");
+            alert("Item added successfully");
             this.props.getCartData(this.props.userGlobal.id);
           })
           .catch(() => {
-            alert("Terjadi kesalahan di server");
+            alert("There is some mistake in server");
           });
       }
     });
@@ -55,18 +56,29 @@ class ProductCard extends React.Component {
     return (
       <div className="card product-card">
         <img
+          // productImage: dari db.json
+          // productData: dari home page
           src={process.env.PUBLIC_URL + this.props.productData.productImage}
           alt=""
         />
-        <div className="mt-2">
+        <div className="mb-2">
           <div>
             <Link
+              // membuat page produk detail utk setiap produk data dg masing2 produk id sbg url address
               to={`/product-detail/${this.props.productData.id}`}
+              // textDecoration: "none" utk menghilangkan garis bawah ketika dihover
+              // color: "inherit" utk membuat tulisan hitam default
               style={{ textDecoration: "none", color: "inherit" }}
             >
+              {/* productName: dari db.json */}
+              {/* productData: dari home page */}
               <h6>{this.props.productData.productName}</h6>
             </Link>
-            <span className="text-muted">Rp{this.props.productData.price}</span>
+            {/* price: dari db.json */}
+            {/* productData: dari home page */}
+            <span className="text-muted">
+              Rp{this.props.productData.price.toLocaleString("id-ID")}
+            </span>
           </div>
           <div className="d-flex flex-row justify-content-end">
             <button

@@ -19,7 +19,8 @@ class History extends React.Component {
         console.log(result.data);
         this.setState({ transactionList: result.data });
       })
-      .catch(() => {
+      .catch((err) => {
+        if(err.response.status == 404) return;
         alert("Terjadi kesalahan di server");
       });
   };

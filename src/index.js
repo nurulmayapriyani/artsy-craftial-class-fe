@@ -9,6 +9,8 @@ import ReduxThunk from "redux-thunk";
 import rootReducer from "./redux/reducers";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// setup redux:
+
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 ReactDOM.render(

@@ -221,6 +221,42 @@
       "productImage": "/images/softcover-dream.jpg",
       "quantity": 3,
       "id": 1
+    },
+    {
+      "userId": 4,
+      "productId": 1,
+      "price": 35000,
+      "productName": "Softcover Diary Book",
+      "productImage": "/images/softcover-diary.jpg",
+      "quantity": 2,
+      "id": 2
+    },
+    {
+      "userId": 6,
+      "productId": 3,
+      "price": 35000,
+      "productName": "Softcover Finance Book",
+      "productImage": "/images/softcover-finance.jpg",
+      "quantity": 1,
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "productId": 2,
+      "price": 35000,
+      "productName": "Softcover Dream Book",
+      "productImage": "/images/softcover-dream.jpg",
+      "quantity": 1,
+      "id": 4
+    },
+    {
+      "userId": 7,
+      "productId": 3,
+      "price": 35000,
+      "productName": "Softcover Finance Book",
+      "productImage": "/images/softcover-finance.jpg",
+      "quantity": 1,
+      "id": 5
     }
   ]
 }

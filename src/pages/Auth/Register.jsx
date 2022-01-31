@@ -1,10 +1,11 @@
 import React from "react";
 import { Link, Navigate } from "react-router-dom";
+// bcs registerUser is an action creator so we have to connect redux which is connect
 import { registerUser } from "../../redux/actions/user";
 import { connect } from "react-redux";
-import "../../assets/styles/gradientStyle.css";
 
 class Register extends React.Component {
+  // to save value of form or input with the suitable name
   state = {
     fullName: "",
     username: "",
@@ -14,9 +15,12 @@ class Register extends React.Component {
   };
 
   inputHandler = (event) => {
+    // value: storage of input users from register page
     const value = event.target.value;
+    // name: to recognize the incoming values from which input
     const name = event.target.name;
 
+    // name using square brackets to make the objects sent to setState is dynamic
     this.setState({ [name]: value });
   };
 
@@ -54,7 +58,7 @@ class Register extends React.Component {
       return <Navigate to="/" />;
     }
     return (
-      <div className="container-fluid gradient-container">
+      <div className="container-fluid">
         <div className="row">
           <div className="text-white mt-5 col-12 text-center">
             <h1>Welcome!</h1>
@@ -100,6 +104,7 @@ class Register extends React.Component {
                 />
                 <div className="d-flex flex-row justify-content-between align-items-center">
                   <button
+                  // vidlearn: onClick={() => this.props.registerUser(this.state)}
                     onClick={this.registerHandler}
                     className="btn btn-warning text-light mt-2"
                   >
@@ -121,6 +126,7 @@ class Register extends React.Component {
   }
 }
 
+// mapStateToProps must be a function even if it's only return empty string
 const mapStateToProps = (state) => {
   return {
     userGlobal: state.user,
@@ -128,6 +134,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
+  // object field & value both registerUser
   registerUser,
 };
 

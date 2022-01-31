@@ -1,5 +1,7 @@
 import React from "react";
+// import Axios utk melakukan panggilan ke json server
 import Axios from "axios";
+// import API_URL utk bisa akses url
 import { API_URL } from "../constants/API";
 import { useParams } from "react-router-dom"; // way 2
 import { connect } from "react-redux";
@@ -8,28 +10,40 @@ import "../assets/styles/gradientStyle.css";
 
 class ProductDetail extends React.Component {
   state = {
-    // menyimpan data dari params
-    productData: {},
+    // productData: menyimpan produk yg didapat sesuai dg id yg kita dpt dri route params kita
+    productData: {
+      price: 0,
+    },
+
+    //default value productNotFound
     productNotFound: false,
     quantity: 1,
   };
 
   fetchProductData = () => {
+    // Axios.get utk mengambil data barang
     Axios.get(`${API_URL}/products`, {
+      // pakai params krn utk mengambil id produk
       params: {
+        // utk mengambil id produk menggunakan props
+        // params kita dptkan dri react-router-dom berkat BrowserRouter
+        // productId: nama route params di App.jsx
         id: this.props.params.productId,
       },
     })
       .then((result) => {
+        // result.data.length jika id terdapat pd data produk
         if (result.data.length) {
+          // result.data: sebuah array
           // result.data[0] artinya utk mendapatkan index pertama, hanya satu index karena id hanya satu digit
           this.setState({ productData: result.data[0] });
         } else {
+          // jika id produk tdk ada pada data produk
           this.setState({ productNotFound: true });
         }
       })
       .catch(() => {
-        alert("Terjadi kesalahan di server");
+        alert("There is some mistake in server");
       });
   };
 
@@ -94,51 +108,57 @@ class ProductDetail extends React.Component {
   render() {
     return (
       <div className="container-fluid gradient-container">
-      <div className="container">
-        {this.state.productNotFound ? (
-          // jika this.state.productNotFound adalah true
-          <div className="alert alert-warning mt-3">
-            Product with ID {this.props.params.productId} has not been found
-          </div>
-        ) : (
-          // jika this.state.productNotFound adalah false
-          <div className="row mt-3">
-            <div className="col-6">
-              <img
-                style={{ width: "100%" }}
-                src={this.state.productData.productImage}
-                alt=""
-              />
+        <div className="container">
+          {this.state.productNotFound ? (
+            // jika this.state.productNotFound adalah true
+            <div className="alert alert-warning mt-3">
+              Product with ID {this.props.params.productId} has not been found
             </div>
-            <div className="col-6 d-flex flex-column justify-content-center">
-              <h4 className="text-white">{this.state.productData.productName}</h4>
-              <h5 className="text-white">Rp {this.state.productData.price}</h5>
-              <p className="text-white">{this.state.productData.description}</p>
-              <div className="d-flex flex-row align-items-center">
+          ) : (
+            // jika this.state.productNotFound adalah false
+            <div className="row mt-3">
+              <div className="col-4">
+                <img
+                  style={{ width: "100%" }}
+                  src={this.state.productData.productImage}
+                  alt=""
+                />
+              </div>
+              <div className="col-6 d-flex flex-column justify-content-center">
+                <h4 className="text-white">
+                  {this.state.productData.productName}
+                </h4>
+                <h5 className="text-white">
+                  Rp {this.state.productData.price.toLocaleString("id-ID")}
+                </h5>
+                <p className="text-white">
+                  {this.state.productData.description}
+                </p>
+                <div className="d-flex flex-row align-items-center">
+                  <button
+                    onClick={() => this.qtyBtnHandler("decrement")}
+                    className="btn btn-warning text-white mx-4"
+                  >
+                    -
+                  </button>
+                  <span className="text-white">{this.state.quantity}</span>
+                  <button
+                    onClick={() => this.qtyBtnHandler("increment")}
+                    className="btn btn-warning text-white mx-4"
+                  >
+                    +
+                  </button>
+                </div>
                 <button
-                  onClick={() => this.qtyBtnHandler("decrement")}
-                  className="btn btn-warning text-white mx-4"
+                  onClick={this.addToCartHandler}
+                  className="btn btn-warning text-white mt-3"
                 >
-                  -
-                </button>
-                <span className="text-white">{this.state.quantity}</span>
-                <button
-                  onClick={() => this.qtyBtnHandler("increment")}
-                  className="btn btn-warning text-white mx-4"
-                >
-                  +
+                  Add to cart
                 </button>
               </div>
-              <button
-                onClick={this.addToCartHandler}
-                className="btn btn-warning text-white mt-3"
-              >
-                Add to cart
-              </button>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
       </div>
     );
   }
