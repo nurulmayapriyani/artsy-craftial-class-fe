@@ -1,13 +1,21 @@
 update:
 
-1. protection in regist for email validation, username (alphanumeric with length 8 to 15), password (at least 8 with special characters)
+-background is stable for every pages, set once in App.css
 
-2. add logo
+-use google font
 
-3. change pagination
+-move cart menu to navbar with symbol/clipart
 
-4. show more product cards at home page
+-simple footer added
 
-5. add products to another category (still need to add one category at least)
+-protection in regist for email validation, username (alphanumeric with length 8 to 15), password (at least 8 with special characters)
 
-6. hide cart and history page from admin
+-logo added
+
+-change pagination
+
+-show more product cards at home page
+
+-add products to another category (still need to add one category at least)
+
+-hide cart and history page from admin
