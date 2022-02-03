@@ -1,34 +1,6 @@
 import Axios from "axios";
 import { API_URL } from "../../constants/API";
-
-// fullName, username, email, password: sama spt yg ada di state register
-export const registerUser = ({ fullName, username, email, password }) => {
-  // bcs Axios.post is asynchronous method, we have to use redux thunk/middleware
-  return (dispatch) => {
-    Axios.post(`${API_URL}/users`, {
-      fullName,
-      username,
-      email,
-      password,
-      role: "user",
-    })
-      .then((result) => {
-        // ketika kita post ke API json server, isinya result.data: data yg dicreate API json server db.json maka dari itu id muncul
-        delete result.data.password;
-        // dispatch ke reducer dg sebuah user login dan payloadnya semua yg di dlm axios.post
-        dispatch({
-          // USER_LOGIN: sesuai yg ada di reducer
-          type: "USER_LOGIN",
-          // otomatis payload akan masuk ke reducer di dlm ...action.payload
-          payload: result.data,
-        });
-        alert("Register Success");
-      })
-      .catch(() => {
-        alert("Register Failed");
-      });
-  };
-};
+import swal from "sweetalert";
 
 // username, password: sama spt yg ada di state login
 export const loginUser = ({ username, password }) => {
@@ -86,7 +58,12 @@ export const loginUser = ({ username, password }) => {
         }
       })
       .catch((err) => {
-        alert("There is some mistake in server");
+        // alert("There is some mistake in server");
+        swal({
+          title: "There is some mistake in server",
+          icon: "warning",
+          confirm: true,
+        });
       });
   };
 };
@@ -129,7 +106,12 @@ export const userKeepLogin = (userData) => {
         });
       })
       .catch(() => {
-        alert("There is some mistake in server");
+        // alert("There is some mistake in server");
+        swal({
+          title: "There is some mistake in server",
+          icon: "warning",
+          confirm: true,
+        });
       });
   };
 };

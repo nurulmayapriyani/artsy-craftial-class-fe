@@ -1,9 +1,12 @@
 import React from "react";
 import ProductCard from "../components/productCard";
+import { connect } from "react-redux";
 // import Axios setiap kali terdapat panggilan ke API
 import Axios from "axios";
+import { getCartData } from "../redux/actions/cart";
 // import API_URL krn kita mau data dari halaman url API
 import { API_URL } from "../constants/API";
+import swal from "sweetalert";
 
 class Home extends React.Component {
   state = {
@@ -25,6 +28,7 @@ class Home extends React.Component {
     sortBy: "",
   };
 
+    
   fetchProducts = () => {
     Axios.get(`${API_URL}/products`)
       .then((result) => {
@@ -39,7 +43,11 @@ class Home extends React.Component {
       })
       .catch((err) => {
         console.log(err);
-        alert("There is some mistake in server");
+        swal({
+          title: "There is some mistake in server",
+          icon: "warning",
+          confirm: true
+        });
       });
   };
 
@@ -157,6 +165,9 @@ class Home extends React.Component {
   // utk membuat fetchProducts trigger ketika masuk home page tanpa mencet apapun
   componentDidMount() {
     this.fetchProducts();
+
+    // update cart when user comes to this page so the user only able to see their own cart
+    this.props.getCartData(this.props.userGlobal.id);
   }
 
   render() {
@@ -165,63 +176,62 @@ class Home extends React.Component {
         <div className="row pt-5">
           <div className="col-auto">
             <div className="card filsort-card">
-              <div className="card-header bg-warning text-light">
+              <div className="card-header bg-warning text-light fs-5">
                 <strong>Filter Products</strong>
               </div>
               <div className="card-body">
-                <label htmlFor="searchProductName">Product Name</label>
+                <label htmlFor="searchProductName" className="fw-bold">Product Name</label>
                 <input
                   onChange={this.inputHandler}
                   name="searchProductName"
                   type="text"
-                  className="form-control mb-3"
+                  className="form-control mb-3 fw-bold"
                 />
-                <label htmlFor="searchCategory">Product Category</label>
+                <label htmlFor="searchCategory" className="fw-bold">Product Category</label>
                 <select
                   onChange={this.inputHandler}
                   name="searchCategory"
-                  className="form-control"
+                  className="form-control fw-bold"
                 >
-                  <option value="">All Items</option>
-                  <option value="softcover">Softcover Notebook</option>
-                  <option value="spiral">Spiral Notebook</option>
-                  {/* <option value="aksesoris">Aksesoris</option> */}
+                  <option value="" className="fw-bold">All Items</option>
+                  <option value="softcover" className="fw-bold">Softcover Notebook</option>
+                  <option value="spiral" className="fw-bold">Spiral Notebook</option>
+                  <option value="pop socket" className="fw-bold">Pop Socket</option>
                 </select>
                 <button
                   onClick={this.searchBtnHandler}
-                  className="btn btn-warning mt-3 text-light"
+                  className="btn btn-warning mt-3 text-light fw-bold"
                 >
                   Search
                 </button>
               </div>
             </div>
             <div className="card filsort-card mt-4">
-              <div className="card-header bg-warning text-light">
+              <div className="card-header bg-warning text-light fs-5">
                 <strong>Sort Products</strong>
               </div>
               <div className="card-body">
-                <label htmlFor="sortBy">Sort by</label>
+                <label htmlFor="sortBy" className="fw-bold">Sort by</label>
                 <select
                   onChange={this.inputHandler}
                   name="sortBy"
-                  className="form-control"
+                  className="form-control fw-bold"
                 >
-                  <option value="">Default</option>
-                  <option value="lowPrice">Lowest Price</option>
-                  <option value="highPrice">Highest Price</option>
-                  <option value="az">A-Z</option>
-                  <option value="za">Z-A</option>
+                  <option value="" className="fw-bold">Default</option>
+                  <option value="lowPrice" className="fw-bold">Lowest Price</option>
+                  <option value="highPrice" className="fw-bold">Highest Price</option>
+                  <option value="az" className="fw-bold">A-Z</option>
+                  <option value="za" className="fw-bold">Z-A</option>
                 </select>
               </div>
             </div>
             <div className="card filsort-card mt-4 d-flex justify-content-center flex-row">
               {/* first page */}
               <a
-                className="btn btn-warning text-light"
+                className="btn btn-warning text-light fw-bold"
                 style={{
                   marginRight: "auto",
                 }}
-                // disabled={this.state.page === 1} not working lol
                 onClick={() => this.paginationHandler(1)}
               >
                 {"<<"}
@@ -231,7 +241,7 @@ class Home extends React.Component {
               {/* page: current page*/}
               {this.state.page > 2 ? (
                 <a
-                  className="btn btn-warning text-light"
+                  className="btn btn-warning text-light fw-bold"
                   onClick={() => this.paginationHandler(this.state.page - 2)}
                 >
                   {this.state.page - 2}
@@ -242,7 +252,7 @@ class Home extends React.Component {
               {/* page: current page */}
               {this.state.page > 1 ? (
                 <a
-                  className="btn btn-warning text-light"
+                  className="btn btn-warning text-light fw-bold"
                   onClick={() => this.paginationHandler(this.state.page - 1)}
                 >
                   {this.state.page - 1}
@@ -252,8 +262,8 @@ class Home extends React.Component {
               {/* current page */}
               {/* page: current page */}
               <a
-                className="btn btn-warning text-light active"
-                style={{ border: "1px solid gray" }}
+                className="btn btn-warning text-light active fw-bold"
+                style={{ border: "3px solid white" }}
               >
                 {this.state.page}
               </a>
@@ -262,7 +272,7 @@ class Home extends React.Component {
               {/* page: current page */}
               {this.state.page < this.state.maxPage ? (
                 <a
-                  className="btn btn-warning text-light"
+                  className="btn btn-warning text-light fw-bold"
                   onClick={() => this.paginationHandler(this.state.page + 1)}
                 >
                   {this.state.page + 1}
@@ -273,7 +283,7 @@ class Home extends React.Component {
               {/* page: current page */}
               {this.state.page < this.state.maxPage - 1 ? (
                 <a
-                  className="btn btn-warning text-light"
+                  className="btn btn-warning text-light fw-bold"
                   onClick={() => this.paginationHandler(this.state.page + 2)}
                 >
                   {this.state.page + 2}
@@ -282,11 +292,10 @@ class Home extends React.Component {
 
               {/* last page */}
               <a
-                className="btn btn-warning text-light"
+                className="btn btn-warning text-light fw-bold"
                 style={{
                   marginLeft: "auto",
                 }}
-                // disabled={this.state.page === this.state.maxPage} not working lol
                 onClick={() => this.paginationHandler(this.state.maxPage)}
               >
                 {">>"}
@@ -305,4 +314,18 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+// mapStateToProps dibuat ketika connect from react-redux
+const mapStateToProps = (state) => {
+  return {
+    // supaya bisa dapat data user dri redux yaitu user id yg digunakan dg getCartData pd function deleteCartHandler
+    userGlobal: state.user,
+  };
+};
+
+// mapDispatchToProps dibuat ketika import getCartData dibutuhkan
+const mapDispatchToProps = {
+  getCartData,
+};
+
+// export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

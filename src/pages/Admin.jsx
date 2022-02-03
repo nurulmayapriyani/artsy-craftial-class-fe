@@ -9,11 +9,20 @@ import "../assets/styles/admin.css";
 import { connect } from "react-redux";
 // import navigate utk navigate login as user to home page and they can't access admin page
 import { Navigate } from "react-router-dom";
+import swal from "sweetalert";
 
 class Admin extends React.Component {
   state = {
     // productList: untuk menyimpan data product list
     productList: [],
+    filterProductList: [],
+
+    page: 1,
+    // maxPage: 0 ==> krn tergantung pd length of produk
+    maxPage: 0,
+    // itemPerPage: declare amount of product item per page
+    itemPerPage: 8,
+    searchProductName: "",
 
     // utk menyimpan input dari form item baru
     addProductName: "",
@@ -21,10 +30,10 @@ class Admin extends React.Component {
     addProductImage: "",
     addDescription: "",
     addCategory: "",
-    
+
     // default editId, supaya kita tahu ketika edit sebuah produk merupakan item yang mana
     editId: 0,
-    
+
     // untuk menyimpan input dari form edit
     editProductName: "",
     editPrice: 0,
@@ -36,10 +45,16 @@ class Admin extends React.Component {
   fetchProducts = () => {
     Axios.get(`${API_URL}/products`)
       .then((result) => {
-        this.setState({ productList: result.data });
+        let maxPage = Math.ceil(result.data.length / this.state.itemPerPage);
+        this.setState({ productList: result.data, maxPage: maxPage, filterProductList: result.data });
       })
-      .catch(() => {
-        alert("There is some mistake in server");
+      .catch((err) => {
+        console.log(err);
+        swal({
+          title: "There is some mistake in server",
+          icon: "warning",
+          confirm: true
+        });
       });
   };
 
@@ -49,7 +64,7 @@ class Admin extends React.Component {
     this.setState({
       editId: editData.id,
       editProductName: editData.productName,
-      editPrice: editData.price,
+      editPrice: editData.price.toLocaleString("id-ID"),
       editProductImage: editData.productImage,
       editDescription: editData.description,
       editCategory: editData.category,
@@ -60,7 +75,25 @@ class Admin extends React.Component {
   cancelEdit = () => {
     this.setState({ editId: 0 });
   };
-  
+
+  // copied the function from home
+  paginationHandler = (page) => {
+    if ((page <= this.state.maxPage) && (page >= 1)) {
+      this.setState({ page: page });
+    }
+  };
+
+  filterHandler = () => {
+    let filterProducts = this.state.productList.filter( 
+      p => p.productName.toLowerCase().includes(this.state.searchProductName.toLowerCase())
+    );
+    this.setState({
+      filterProductList: filterProducts,
+      page: 1
+    });
+  }
+
+
   // function utk tombol save ketika edit produk
   saveBtnHandler = () => {
     // Axios.patch harus memiliki id dari produk yg mau didelete
@@ -73,38 +106,63 @@ class Admin extends React.Component {
       description: this.state.editDescription,
       category: this.state.editCategory,
     })
-    .then(() => {
-      // fetchproducts memberikan data terbaru setelah produk diedit
-      this.fetchProducts();
-      // setelah disave, form edit akan hilang dan data tampil spt semula
-      this.cancelEdit();
-    })
-    .catch(() => {
-      alert("There is some mistake in server");
-    });
+      .then(() => {
+        // fetchproducts memberikan data terbaru setelah produk diedit
+        this.fetchProducts();
+        // setelah disave, form edit akan hilang dan data tampil spt semula
+        this.cancelEdit();
+      })
+      .catch((err) => {
+        console.log(err);
+
+        swal({
+          title: "There is some mistake in server",
+          icon: "warning",
+          confirm: true
+        });
+      });
   };
-  
+
   // function utk tombol delete
-  deleteBtnHandler = (deleteId) => {
-    // using window. bcs without it there will be an error
-    const confirmDelete = window.confirm("Are you sure to delete this?");
+  deleteBtnHandler = async (deleteId) => {
+    // await will make code wait here until there is response in confirmDelete. So both cancel and delete buttons will works
+    const confirmDelete = await swal({
+        title: "Are you sure to delete this?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+    });
+
     if (confirmDelete) {
       // Axios.delete harus memiliki id dari produk yg mau didelete
       Axios.delete(`${API_URL}/products/${deleteId}`)
-      .then(() => {
-        // fetchproducts memberikan data terbaru setelah produk didelete
+        .then(() => {
+          // fetchproducts memberikan data terbaru setelah produk didelete
           this.fetchProducts();
         })
-        .catch(() => {
-          alert("There is some mistake in server");
+        .catch((err) => {
+          console.log(err);
+          swal({
+            title: "There is some mistake in server",
+            icon: "warning",
+            confirm: true
+          });
         });
     } else {
-      alert("Delete canceled");
+      swal({
+        title: "Delete Canceled",
+        icon: "info",
+        confirm: true
+      });
     }
   };
 
   renderProducts = () => {
-    return this.state.productList.map((val) => {
+
+    const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
+
+    // slice: menentukan index produk ke berapa saja yg ditampilkan pada setiap pagenya
+    return this.state.filterProductList.slice(beginningIndex, beginningIndex + this.state.itemPerPage).map((val) => {
       // jika barang sdg diedit maka yg ditampilkan berupa form yg bisa diinput
       if (val.id === this.state.editId) {
         return (
@@ -115,7 +173,7 @@ class Admin extends React.Component {
                 value={this.state.editProductName}
                 onChange={this.inputHandler}
                 type="text"
-                className="form-control"
+                className="form-control fw-bold"
                 name="editProductName"
               />
             </td>
@@ -124,7 +182,7 @@ class Admin extends React.Component {
                 value={this.state.editPrice}
                 onChange={this.inputHandler}
                 type="number"
-                className="form-control"
+                className="form-control fw-bold"
                 name="editPrice"
               />
             </td>
@@ -133,7 +191,7 @@ class Admin extends React.Component {
                 value={this.state.editProductImage}
                 onChange={this.inputHandler}
                 type="text"
-                className="form-control"
+                className="form-control fw-bold"
                 name="editProductImage"
               />
             </td>
@@ -142,7 +200,7 @@ class Admin extends React.Component {
                 value={this.state.editDescription}
                 onChange={this.inputHandler}
                 type="text"
-                className="form-control"
+                className="form-control fw-bold"
                 name="editDescription"
               />
             </td>
@@ -151,21 +209,21 @@ class Admin extends React.Component {
                 value={this.state.editCategory}
                 onChange={this.inputHandler}
                 name="editCategory"
-                className="form-control"
+                className="form-control fw-bold"
               >
-                <option value="">All Items</option>
-                <option value="softcover">Softcover Notebook</option>
-                <option value="spiral">Spiral Notebook</option>
-                {/* <option value="aksesoris">Aksesoris</option> */}
+                <option value="" className="fw-bold">All Items</option>
+                <option value="softcover" className="fw-bold">Softcover Notebook</option>
+                <option value="spiral" className="fw-bold">Spiral Notebook</option>
+                <option value="pop socket" className="fw-bold">Pop Socket</option>
               </select>
             </td>
             <td>
-              <button onClick={this.saveBtnHandler} className="btn btn-success">
+              <button onClick={this.saveBtnHandler} className="btn btn-success fw-bold">
                 Save
               </button>
             </td>
             <td>
-              <button onClick={this.cancelEdit} className="btn btn-danger">
+              <button onClick={this.cancelEdit} className="btn btn-danger fw-bold">
                 Cancel
               </button>
             </td>
@@ -173,12 +231,12 @@ class Admin extends React.Component {
         );
       }
 
-      // default tampilan produk list pada admin page
+      // framework in admin page
       return (
         <tr>
-          <td>{val.id}</td>
-          <td>{val.productName}</td>
-          <td>{val.price}</td>
+          <td className="align-middle">{val.id}</td>
+          <td className="align-middle">{val.productName}</td>
+          <td className="align-middle">Rp{val.price.toLocaleString("id-ID")}</td>
           <td>
             <img
               className="admin-product-image"
@@ -186,22 +244,22 @@ class Admin extends React.Component {
               alt=""
             />
           </td>
-          <td>{val.description}</td>
-          <td>{val.category}</td>
-          <td>
+          <td className="align-middle">{val.description}</td>
+          <td className="align-middle">{val.category}</td>
+          <td className="align-middle">
             {/* editToggle menerima parameter yaitu editData dri produk jadi pada onClick hrs dibungkus dg anonymous function supaya kita bisa kasih parameter yaitu val*/}
             <button
               // val mengirimkan semua key dlm satu object ke editToggle
               onClick={() => this.editToggle(val)}
-              className="btn btn-secondary"
+              className="btn btn-warning text-light fw-bold"
             >
               Edit
             </button>
           </td>
-          <td>
+          <td className="align-middle">
             <button
               onClick={() => this.deleteBtnHandler(val.id)}
-              className="btn btn-danger"
+              className="btn btn-danger fw-bold"
             >
               Delete
             </button>
@@ -233,8 +291,13 @@ class Admin extends React.Component {
           addCategory: "",
         });
       })
-      .catch(() => {
-        alert("There is some mistake in server");
+      .catch((err) => {
+        console.log(err);
+        swal({
+          title: "There is some mistake in server",
+          icon: "warning",
+          confirm: true
+        });
       });
   };
 
@@ -252,32 +315,62 @@ class Admin extends React.Component {
     this.fetchProducts();
   }
 
+
+  inputHandler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState({ [name]: value });
+  };
+
+
   render() {
     // jika login sbg user maka direturn to home page
     if (this.props.userGlobal.role !== "admin") {
       return <Navigate to="/" />;
     }
 
-    // form input utk new item
     return (
       <div className="p-5">
         <div className="row">
-          <div className="col-12 text-center">
-            <h1>Manage Products</h1>
-            <table className="table mt-4">
+          <div className="col-12 text-center bg-light bg-gradient shadow-lg rounded bg-opacity-75">
+            <h1 className="text-warning p-5 fw-bold">Product Lists</h1>
+            <div className="mx-auto d-flex align-items-start" style={{
+                  width: "300px"
+                }}>
+                  <input
+                        onChange={this.inputHandler}
+                        name="searchProductName"
+                        type="text"
+                        style={{
+                          paddingTop: "5px",
+                          paddingButton: "5px"
+                        }}
+                        className="form-control mb-3 fw-bold"
+                      />
+                  <button 
+                      className="btn btn-warning text-light fw-bold"
+                      onClick={this.filterHandler}>Filter</button>
+            </div>
+            <table className="table table-hover border-warning">
               <thead className="thead-light">
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Image</th>
-                  <th>Description</th>
-                  <th>Category</th>
-                  <th colSpan="2">Action</th>
+                <tr className="bg-warning bg-opacity-50">
+                  <th className="text-light fs-5">ID</th>
+                  <th className="text-light fs-5">Name</th>
+                  <th className="text-light fs-5">Price</th>
+                  <th className="text-light fs-5">Image</th>
+                  <th className="text-light fs-5">Description</th>
+                  <th className="text-light fs-5">Category</th>
+                  <th className="text-light fs-5" colSpan="2">
+                    Action
+                  </th>
                 </tr>
               </thead>
-              <tbody>{this.renderProducts()}</tbody>
-              <tfoot className="bg-light">
+              <tbody className="bg-light bg-opacity-75 fs-6 fw-bold">
+                {this.renderProducts()}
+              </tbody>
+              {/* // form input utk new item */}
+              <tfoot className="bg-warning bg-opacity-25">
                 <tr>
                   <td></td>
                   <td>
@@ -286,7 +379,7 @@ class Admin extends React.Component {
                       onChange={this.inputHandler}
                       name="addProductName"
                       type="text"
-                      className="form-control"
+                      className="form-control fw-bold"
                     />
                   </td>
                   <td>
@@ -295,7 +388,7 @@ class Admin extends React.Component {
                       onChange={this.inputHandler}
                       name="addPrice"
                       type="number"
-                      className="form-control"
+                      className="form-control fw-bold"
                     />
                   </td>
                   <td>
@@ -304,7 +397,7 @@ class Admin extends React.Component {
                       onChange={this.inputHandler}
                       name="addProductImage"
                       type="text"
-                      className="form-control"
+                      className="form-control fw-bold"
                     />
                   </td>
                   <td>
@@ -313,25 +406,25 @@ class Admin extends React.Component {
                       onChange={this.inputHandler}
                       name="addDescription"
                       type="text"
-                      className="form-control"
+                      className="form-control fw-bold"
                     />
                   </td>
                   <td>
                     <select
                       onChange={this.inputHandler}
                       name="addCategory"
-                      className="form-control"
+                      className="form-control fw-bold"
                     >
                       <option value="">All Items</option>
                       <option value="softcover">Softcover Notebook</option>
                       <option value="spiral">Spiral Notebook</option>
-                      {/* <option value="aksesoris">Aksesoris</option> */}
+                      <option value="pop socket">Pop Socket</option>
                     </select>
                   </td>
                   <td colSpan="2">
                     <button
                       onClick={this.addNewProduct}
-                      className="btn btn-info"
+                      className="btn btn-warning text-light fw-bold"
                     >
                       Add Product
                     </button>
@@ -339,6 +432,85 @@ class Admin extends React.Component {
                 </tr>
               </tfoot>
             </table>
+            {/* copied the div from home */}
+            <div className="card mx-auto mb-3 filsort-card d-flex justify-content-center flex-row">
+              {/* first page */}
+              <a
+                className="btn btn-warning text-light fw-bold"
+                style={{
+                  marginRight: "auto",
+                }}
+                // disabled={this.state.page === 1} not working lol
+                onClick={() => this.paginationHandler(1)}
+              >
+                {"<<"}
+              </a>
+
+              {/* previous page 2 */}
+              {/* page: current page*/}
+              {this.state.page > 2 ? (
+                <a
+                  className="btn btn-warning text-light fw-bold"
+                  onClick={() => this.paginationHandler(this.state.page - 2)}
+                >
+                  {this.state.page - 2}
+                </a>
+              ) : null}
+
+              {/* previous page */}
+              {/* page: current page */}
+              {this.state.page > 1 ? (
+                <a
+                  className="btn btn-warning text-light fw-bold"
+                  onClick={() => this.paginationHandler(this.state.page - 1)}
+                >
+                  {this.state.page - 1}
+                </a>
+              ) : null}
+
+              {/* current page */}
+              {/* page: current page */}
+              <a
+                className="btn btn-warning text-light active fw-bold"
+                style={{ border: "3px solid white" }}
+              >
+                {this.state.page}
+              </a>
+
+              {/* next page */}
+              {/* page: current page */}
+              {this.state.page < this.state.maxPage ? (
+                <a
+                  className="btn btn-warning text-light fw-bold"
+                  onClick={() => this.paginationHandler(this.state.page + 1)}
+                >
+                  {this.state.page + 1}
+                </a>
+              ) : null}
+
+              {/* next page 2 */}
+              {/* page: current page */}
+              {this.state.page < this.state.maxPage - 1 ? (
+                <a
+                  className="btn btn-warning text-light fw-bold"
+                  onClick={() => this.paginationHandler(this.state.page + 2)}
+                >
+                  {this.state.page + 2}
+                </a>
+              ) : null}
+
+              {/* last page */}
+              <a
+                className="btn btn-warning text-light fw-bold"
+                style={{
+                  marginLeft: "auto",
+                }}
+                // disabled={this.state.page === this.state.maxPage} not working lol
+                onClick={() => this.paginationHandler(this.state.maxPage)}
+              >
+                {">>"}
+              </a>
+            </div>
           </div>
         </div>
       </div>

@@ -1,21 +1,23 @@
 update:
 
--background is stable for every pages, set once in App.css
+-modified current basic *admin page* from video learning
 
--use google font
+-modified current basic *cart page* from video learning
 
--move cart menu to navbar with symbol/clipart
+-modified current basic *history page* from video learning
 
--simple footer added
+-modified default *alert to sweetalert*
 
--protection in regist for email validation, username (alphanumeric with length 8 to 15), password (at least 8 with special characters)
+-fix bug in checkout process (error alert show up after the task run)
 
--logo added
+-fix bug in history page (the checkout data doesn't send to history page)
 
--change pagination
+-add protection for the same username in register page
 
--show more product cards at home page
+-add filter and pagination in admin page
 
--add products to another category (still need to add one category at least)
+-add one more category products
 
--hide cart and history page from admin
+-fix bug data shopping cart (access to every users)
+
+-fix bug delete alert in admin page (still delete product when click cancel)

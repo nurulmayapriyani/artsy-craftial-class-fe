@@ -4,9 +4,11 @@ import Axios from "axios";
 // import API_URL utk bisa akses url
 import { API_URL } from "../constants/API";
 import { useParams } from "react-router-dom"; // way 2
+// import connect from react-redux to get userId in Axios.post addToCartHandler
 import { connect } from "react-redux";
 import { getCartData } from "../redux/actions/cart";
 import "../assets/styles/gradientStyle.css";
+import swal from "sweetalert";
 
 class ProductDetail extends React.Component {
   state = {
@@ -17,6 +19,7 @@ class ProductDetail extends React.Component {
 
     //default value productNotFound
     productNotFound: false,
+    // default qty saat utk add to cart
     quantity: 1,
   };
 
@@ -43,10 +46,15 @@ class ProductDetail extends React.Component {
         }
       })
       .catch(() => {
-        alert("There is some mistake in server");
+        swal({
+          title: "There is some mistake in server",
+          icon: "warning",
+          confirm: true
+        });
       });
   };
 
+  // function to increase and decrease qty before add to cart
   qtyBtnHandler = (action) => {
     if (action === "increment") {
       this.setState({ quantity: this.state.quantity + 1 });
@@ -56,48 +64,73 @@ class ProductDetail extends React.Component {
     }
   };
 
+  // function to add qty of certain product to cart
   addToCartHandler = () => {
-    // Check apakah user sudah memiliki barang tsb di cart
     Axios.get(`${API_URL}/carts`, {
-      // cari data spesifik
+      // cari data spesifik, cek apakah user dg id tsb sdh memiliki barang dg id terkait di dlm cartnya
       params: {
         userId: this.props.userGlobal.id,
         productId: this.state.productData.id,
       },
     }).then((result) => {
+      // Jika barang terkait sudah ada di cart user (makanya memiliki length), gunakan patch
       if (result.data.length) {
-        // Jika barangnya sudah ada di cart user
-        // hanya bisa ambil id {result.data[0].id} data cart dri qty barang yg mau diedit karena API msh pakai json.server, tdk bisa dri userid & productid karena blm buat API sendiri. Id yg diambil di sini tergantung dari userId & productId apa yg diperoleh dari data cart (yg terdapat di dlm params di atas)
+        // patch: menambahkan qty yg sdh ada dg qty yg baru ditambahkan
+        // patch membutuhkan satu parameter lg yaitu id dri barang terkait yg qtynya mau ditambahkan
+        // hanya bisa ambil id {result.data[0].id} dri data cart di db.json utk barang terkait yg qty mau diedit karena API msh pakai json.server, tdk bisa dri userid & productid karena blm buat API sendiri. Id yg diambil di sini tergantung dari userId & productId apa yg diperoleh dari data cart (yg terdapat di dlm params di atas)
+        // isi result.data adalah data yg dimiliki oleh carts
+        // result.data[0].id ==> isi id adalah yg kita dapatkan dri kriteria di dlm params di atas
         Axios.patch(`${API_URL}/carts/${result.data[0].id}`, {
+          // quantity: filed yg kita mau ubah => qty yg sdh ada + qty baru
           quantity: result.data[0].quantity + this.state.quantity,
         })
           .then(() => {
-            alert("Berhasil menambahkan barang");
+            swal({
+              title: "Item added successfully",
+              icon: "success",
+              confirm: true
+            });
+            // agar ketika klik add to cart dan berhasil, data di cart akan langsung bertambah
+            // getCartData dipanggil setiap di mana terjadi perubahan pd cart
             this.props.getCartData(this.props.userGlobal.id);
           })
           .catch(() => {
-            alert("Terjadi kesalahan di server");
+            swal({
+              title: "There is some mistake in server",
+              icon: "warning",
+              confirm: true
+            });
           });
-      } else {
-        // Jika barangnya belum ada di cart user
-        Axios.post(`${API_URL}/carts`, {
-          userId: this.props.userGlobal.id,
-          productId: this.state.productData.id,
-          price: this.state.productData.price,
-          productName: this.state.productData.productName,
-          productImage: this.state.productData.productImage,
-          quantity: this.state.quantity,
-        })
+        } else {
+          // Jika barang terkait belum ada di cart user, gunakan post
+          Axios.post(`${API_URL}/carts`, {
+            userId: this.props.userGlobal.id,
+            productId: this.state.productData.id,
+            price: this.state.productData.price,
+            productName: this.state.productData.productName,
+            productImage: this.state.productData.productImage,
+            quantity: this.state.quantity,
+          })
           .then(() => {
-            alert("Berhasil menambahkan barang");
+            swal({
+              title: "Item added successfully",
+              icon: "success",
+              confirm: true
+            });
+            // agar ketika klik add to cart dan berhasil, data di cart akan langsung bertambah
+            // getCartData dipanggil setiap di mana terjadi perubahan pd cart
             this.props.getCartData(this.props.userGlobal.id);
           })
           .catch(() => {
-            alert("Terjadi kesalahan di server");
+            swal({
+              title: "There is some mistake in server",
+              icon: "warning",
+              confirm: true
+            });
           });
-      }
-    });
-  };
+        }
+      });
+    };
 
   componentDidMount() {
     this.fetchProductData();
@@ -116,42 +149,47 @@ class ProductDetail extends React.Component {
             </div>
           ) : (
             // jika this.state.productNotFound adalah false
-            <div className="row mt-3">
+            <div className="row mt-5 bg-light bg-gradient shadow-lg rounded bg-opacity-75">
               <div className="col-4">
                 <img
+                  className="mt-5 pb-5"
                   style={{ width: "100%" }}
                   src={this.state.productData.productImage}
                   alt=""
                 />
               </div>
               <div className="col-6 d-flex flex-column justify-content-center">
-                <h4 className="text-white">
+                <h4 className="fw-bold pb-3">
                   {this.state.productData.productName}
                 </h4>
-                <h5 className="text-white">
+                <h5 className="fw-bold pb-3">
                   Rp {this.state.productData.price.toLocaleString("id-ID")}
                 </h5>
-                <p className="text-white">
+                <p className="fw-bold fs-5 pb-5">
                   {this.state.productData.description}
                 </p>
                 <div className="d-flex flex-row align-items-center">
                   <button
+                    // terdapat tanda kurung dg parameter kosong krn fungsi yg dipanggil menerima parameter
+                    // decrement sesuai dg kondisi di dlm fungsi tsb
                     onClick={() => this.qtyBtnHandler("decrement")}
-                    className="btn btn-warning text-white mx-4"
-                  >
+                    className="btn btn-warning text-white mx-4 fw-bold"
+                    >
                     -
                   </button>
-                  <span className="text-white">{this.state.quantity}</span>
+                  <span className="fs-4 fw-bold">{this.state.quantity}</span>
                   <button
+                    // terdapat tanda kurung dg parameter kosong krn fungsi yg dipanggil menerima parameter
+                    // increment sesuai dg kondisi di dlm fungsi tsb
                     onClick={() => this.qtyBtnHandler("increment")}
-                    className="btn btn-warning text-white mx-4"
+                    className="btn btn-warning text-white mx-4 fw-bold"
                   >
                     +
                   </button>
                 </div>
                 <button
                   onClick={this.addToCartHandler}
-                  className="btn btn-warning text-white mt-3"
+                  className="btn btn-warning text-white mt-3 fw-bold"
                 >
                   Add to cart
                 </button>

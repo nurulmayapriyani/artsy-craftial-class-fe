@@ -47,9 +47,164 @@
       "password": "honeybee",
       "role": "admin",
       "id": 6
+    },
+    {
+      "fullName": "Artsy Craftial",
+      "username": "artsycraftial31",
+      "email": "artsycraftial@gmail.com",
+      "password": "$artsycraftial",
+      "role": "user",
+      "id": 7
+    },
+    {
+      "fullName": "Nurul May Apriyani",
+      "username": "mayariyani31",
+      "email": "nurulmayapriyani@gmail.com",
+      "password": "apayagataudeh$",
+      "role": "user",
+      "id": 8
     }
   ],
-  "transaction": [],
+  "transaction": [
+    {
+      "userId": 1,
+      "address": "backstreet",
+      "recipientName": "budu",
+      "totalPrice": 115500,
+      "totalPayment": 200000,
+      "transactionDate": "2-2-2022",
+      "transactionItems": [
+        {
+          "userId": 1,
+          "productId": 7,
+          "price": 35000,
+          "productName": "Softcover Sewing Book",
+          "productImage": "/images/softcover-sewing.jpg",
+          "quantity": 3,
+          "id": 9
+        }
+      ],
+      "id": 1
+    },
+    {
+      "userId": 1,
+      "address": "backstreet",
+      "recipientName": "hunny",
+      "totalPrice": 77000,
+      "totalPayment": 77000,
+      "transactionDate": "2-2-2022",
+      "transactionItems": [
+        {
+          "userId": 1,
+          "productId": 7,
+          "price": 35000,
+          "productName": "Softcover Sewing Book",
+          "productImage": "/images/softcover-sewing.jpg",
+          "quantity": 1,
+          "id": 17
+        },
+        {
+          "userId": 1,
+          "productId": 6,
+          "price": 35000,
+          "productName": "Softcover Journal Book",
+          "productImage": "/images/softcover-journal.jpg",
+          "quantity": 1,
+          "id": 18
+        }
+      ],
+      "id": 2
+    },
+    {
+      "userId": 1,
+      "address": "backstreet",
+      "recipientName": "hunny",
+      "totalPrice": 38500,
+      "totalPayment": 40000,
+      "transactionDate": "2-2-2022",
+      "transactionItems": [
+        {
+          "userId": 1,
+          "productId": 5,
+          "price": 35000,
+          "productName": "Softcover Recipe Book",
+          "productImage": "/images/softcover-recipe.jpg",
+          "quantity": 1,
+          "id": 17
+        }
+      ],
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "address": "backstreet",
+      "recipientName": "hunny",
+      "totalPrice": 38500,
+      "totalPayment": 40000,
+      "transactionDate": "2-2-2022",
+      "transactionItems": [
+        {
+          "userId": 1,
+          "productId": 8,
+          "price": 35000,
+          "productName": "Softcover Sketch Book",
+          "productImage": "/images/softcover-sketch.jpg",
+          "quantity": 1,
+          "id": 17
+        }
+      ],
+      "id": 4
+    },
+    {
+      "userId": 1,
+      "address": "backstreet",
+      "recipientName": "hunny",
+      "totalPrice": 38500,
+      "totalPayment": 40000,
+      "transactionDate": "3-2-2022",
+      "transactionItems": [
+        {
+          "userId": 1,
+          "productId": 6,
+          "price": 35000,
+          "productName": "Softcover Journal Book",
+          "productImage": "/images/softcover-journal.jpg",
+          "quantity": 1,
+          "id": 18
+        }
+      ],
+      "id": 5
+    },
+    {
+      "userId": 8,
+      "address": "backstreet",
+      "recipientName": "hunny",
+      "totalPrice": 77000,
+      "totalPayment": 80000,
+      "transactionDate": "3-2-2022",
+      "transactionItems": [
+        {
+          "userId": 8,
+          "productId": 21,
+          "price": 35000,
+          "productName": "Pop Socket Acrylic",
+          "productImage": "/images/pop-socket-acrylic.png",
+          "quantity": 1,
+          "id": 24
+        },
+        {
+          "userId": 8,
+          "productId": 3,
+          "price": 35000,
+          "productName": "Softcover Finance Book",
+          "productImage": "/images/softcover-finance.jpg",
+          "quantity": 1,
+          "id": 25
+        }
+      ],
+      "id": 6
+    }
+  ],
   "products": [
     {
       "id": 1,
@@ -118,7 +273,7 @@
     {
       "id": 9,
       "productName": "Softcover Subject Book",
-      "price": 35000,
+      "price": 35,
       "productImage": "/images/softcover-subject.jpg",
       "description": "Softcover Notebook with Sketch Cover Design and Custom Words",
       "category": "Softcover Notebook"
@@ -210,53 +365,61 @@
       "productImage": "/images/spiral-cameralense.jpg",
       "description": "Spiral Notebook with Camera Lense Cover Design and Custom Words",
       "category": "Spiral Notebook"
+    },
+    {
+      "id": 21,
+      "productName": "Pop Socket Acrylic",
+      "price": 35000,
+      "productImage": "/images/pop-socket-acrylic.png",
+      "description": "Pop Socket Acrylic with Your Custom Design",
+      "category": "Pop Socket"
     }
   ],
   "carts": [
     {
-      "userId": 0,
-      "productId": 2,
-      "price": 35000,
-      "productName": "Softcover Dream Book",
-      "productImage": "/images/softcover-dream.jpg",
-      "quantity": 3,
-      "id": 1
-    },
-    {
       "userId": 4,
-      "productId": 1,
+      "productId": 7,
       "price": 35000,
-      "productName": "Softcover Diary Book",
-      "productImage": "/images/softcover-diary.jpg",
+      "productName": "Softcover Sewing Book",
+      "productImage": "/images/softcover-sewing.jpg",
       "quantity": 2,
-      "id": 2
+      "id": 17
     },
     {
       "userId": 6,
-      "productId": 3,
+      "productId": 7,
       "price": 35000,
-      "productName": "Softcover Finance Book",
-      "productImage": "/images/softcover-finance.jpg",
+      "productName": "Softcover Sewing Book",
+      "productImage": "/images/softcover-sewing.jpg",
       "quantity": 1,
-      "id": 3
+      "id": 19
     },
     {
-      "userId": 1,
-      "productId": 2,
+      "userId": 2,
+      "productId": 7,
       "price": 35000,
-      "productName": "Softcover Dream Book",
-      "productImage": "/images/softcover-dream.jpg",
+      "productName": "Softcover Sewing Book",
+      "productImage": "/images/softcover-sewing.jpg",
       "quantity": 1,
-      "id": 4
+      "id": 21
     },
     {
-      "userId": 7,
-      "productId": 3,
+      "userId": 2,
+      "productId": 8,
       "price": 35000,
-      "productName": "Softcover Finance Book",
-      "productImage": "/images/softcover-finance.jpg",
+      "productName": "Softcover Sketch Book",
+      "productImage": "/images/softcover-sketch.jpg",
       "quantity": 1,
-      "id": 5
+      "id": 22
+    },
+    {
+      "userId": 5,
+      "productId": 8,
+      "price": 35000,
+      "productName": "Softcover Sketch Book",
+      "productImage": "/images/softcover-sketch.jpg",
+      "quantity": 1,
+      "id": 23
     }
   ]
 }

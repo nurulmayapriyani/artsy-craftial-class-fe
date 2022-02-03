@@ -2,10 +2,12 @@ import React from "react";
 import "../assets/styles/productCard.css";
 // import Link krn menggunakan tag Link
 import { Link } from "react-router-dom";
+// import react-redux krn kita perlu user id di params addToCartHandler
 import { connect } from "react-redux";
 import Axios from "axios";
 import { API_URL } from "../constants/API";
 import { getCartData } from "../redux/actions/cart";
+import swal from "sweetalert";
 
 class ProductCard extends React.Component {
   addToCartHandler = () => {
@@ -25,16 +27,26 @@ class ProductCard extends React.Component {
           quantity: result.data[0].quantity + 1,
         })
           .then(() => {
-            ("Item added successfully");
+            swal({
+              title: "Item added successfully",
+              icon: "success",
+              confirm: true
+            });
+
             this.props.getCartData(this.props.userGlobal.id);
           })
           .catch(() => {
-            alert("There is some mistake in server");
+            swal({
+              title: "There is some mistake in server",
+              icon: "warning",
+              confirm: true
+            });
           });
       } else {
         // Jika barangnya belum ada di cart user
         Axios.post(`${API_URL}/carts`, {
           userId: this.props.userGlobal.id,
+          // productData: menyimpan data product
           productId: this.props.productData.id,
           price: this.props.productData.price,
           productName: this.props.productData.productName,
@@ -42,11 +54,20 @@ class ProductCard extends React.Component {
           quantity: 1,
         })
           .then(() => {
-            alert("Item added successfully");
+            swal({
+              title: "Item added successfully",
+              icon: "success",
+              confirm: true
+            });
+
             this.props.getCartData(this.props.userGlobal.id);
           })
           .catch(() => {
-            alert("There is some mistake in server");
+            swal({
+              title: "There is some mistake in server",
+              icon: "warning",
+              confirm: true
+            });
           });
       }
     });
@@ -72,18 +93,20 @@ class ProductCard extends React.Component {
             >
               {/* productName: dari db.json */}
               {/* productData: dari home page */}
-              <h6>{this.props.productData.productName}</h6>
+              <div className="fw-bold">
+                {this.props.productData.productName}
+              </div>
             </Link>
             {/* price: dari db.json */}
             {/* productData: dari home page */}
-            <span className="text-muted">
+            <span className="text-muted fw-bold">
               Rp{this.props.productData.price.toLocaleString("id-ID")}
             </span>
           </div>
           <div className="d-flex flex-row justify-content-end">
             <button
               onClick={this.addToCartHandler}
-              className="btn btn-warning text-light mt-2"
+              className="btn btn-warning text-light mt-2 fw-bold"
             >
               Add to cart
             </button>

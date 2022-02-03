@@ -8,6 +8,7 @@ class Login extends React.Component {
   state = {
     username: "",
     password: "",
+    error: "",
   };
 
   inputHandler = (event) => {
@@ -28,8 +29,8 @@ class Login extends React.Component {
       <div className="container-fluid">
         <div className="row">
           <div className="text-white mt-5 col-12 text-center">
-            <h1>Log in now!</h1>
-            <p className="lead">
+            <h1 className="fw-bold">Log in now!</h1>
+            <p className="lead fs-3 fw-bold">
               Log in now and start shopping ^-^
             </p>
           </div>
@@ -47,32 +48,32 @@ class Login extends React.Component {
 
             <div className="card">
               <div className="card-body">
-                <h5 className="text-warning font-weight-bold mb-3">Log in</h5>
+                <h5 className="text-warning font-weight-bold mb-3 fs-4 fw-bold">Log in</h5>
                 <input
                   onChange={this.inputHandler}
                   name="username"
                   placeholder="Username"
                   type="text"
-                  className="form-control my-2"
+                  className="form-control my-2 fw-bold fs-5"
                 />
                 <input
                   onChange={this.inputHandler}
                   name="password"
                   placeholder="Password"
                   type="password"
-                  className="form-control my-2"
+                  className="form-control my-2 fw-bold fs-5"
                 />
                 <div className="d-flex flex-row justify-content-between align-items-center">
                   <button
                   // (this.state) bcs it is object that state username and password that suit the action creator in redux
                     onClick={() => this.props.loginUser(this.state)}
-                    className="btn btn-warning text-light mt-2"
+                    className="btn btn-warning text-light mt-2 fw-bold"
                   >
                     Login
                   </button>
                   <Link
                     to="/register"
-                    className="text-warning text-decoration-none"
+                    className="text-warning text-decoration-none fw-bold fs-5"
                   >
                     or Register
                   </Link>
