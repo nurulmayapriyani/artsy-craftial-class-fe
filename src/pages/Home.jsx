@@ -28,14 +28,13 @@ class Home extends React.Component {
     sortBy: "",
   };
 
-    
   fetchProducts = () => {
     Axios.get(`${API_URL}/products`)
       .then((result) => {
         this.setState({
           // setState productList menjadi data yg dikirim lewat result
           // productList (result.data) isinya array of object dari products di db.json
-          productList: result.data,
+          productList: result.data, // it is productlist not productdata. productData is prop of ProductCard component. we pass it value of the product.
           maxPage: Math.ceil(result.data.length / this.state.itemPerPage),
           // default value sblm filteredProductList: result.data
           filteredProductList: result.data,
@@ -46,7 +45,7 @@ class Home extends React.Component {
         swal({
           title: "There is some mistake in server",
           icon: "warning",
-          confirm: true
+          confirm: true,
         });
       });
   };
@@ -54,7 +53,7 @@ class Home extends React.Component {
   renderProducts = () => {
     // beginningIndex: index pertama dari produk yg ditampilkan dari setiap currentData
     const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
-    // rawData berisi cloningan array dari filteredProductList agar kita dpt memanipulasi array tsb scr langsung, karena kita tdk boleh manipulasi state jika bukan melewati setState, dan ketika kita sort sebuah array maka array dari filteredProductList akan otomatis berubah, tapi kita akan mengubahnya menggunakan sort bukan setState jd itu tdk boleh di dlm react, maka kita sediakan rawData yg isinya cloningan array dari filteredProductList
+    // rawData berisi clon  ingan array dari filteredProductList agar kita dpt memanipulasi array tsb scr langsung, karena kita tdk boleh manipulasi state jika bukan melewati setState, dan ketika kita sort sebuah array maka array dari filteredProductList akan otomatis berubah, tapi kita akan mengubahnya menggunakan sort bukan setState jd itu tdk boleh di dlm react, maka kita sediakan rawData yg isinya cloningan array dari filteredProductList
     let rawData = [...this.state.filteredProductList];
 
     // function utk mengurangi data productName di dlm switch yg merupakan string
@@ -69,7 +68,7 @@ class Home extends React.Component {
         return 1;
       }
 
-      // tidak melakukan sort by produkName
+      // tidak melakukan sort by productName
       return 0;
     };
 
@@ -101,9 +100,18 @@ class Home extends React.Component {
       beginningIndex + this.state.itemPerPage
     );
 
-    return currentData.map((val) => {
-      return <ProductCard productData={val} />;
-    });
+    // it comes from this productsList . it is coming from axios.get after that filters and pagination and sort. but the others didnt declare productData, others who?
+
+    // we can also write it as,
+    // return currentData.map((val) => {
+    //   return <ProductCard productData={val} />;   // this is prop of ProductCard. we are passing product data inside ProductCard component. In productCard component we can get it using props.productData. So prodp
+    // });
+
+    let products = [];
+    for (let i = 0; i < currentData.length; i++) {
+      products.push(<ProductCard productData={currentData[i]}></ProductCard>);
+    }
+    return products;
   };
 
   paginationHandler = (page) => {
@@ -180,23 +188,35 @@ class Home extends React.Component {
                 <strong>Filter Products</strong>
               </div>
               <div className="card-body">
-                <label htmlFor="searchProductName" className="fw-bold">Product Name</label>
+                <label htmlFor="searchProductName" className="fw-bold">
+                  Product Name
+                </label>
                 <input
                   onChange={this.inputHandler}
                   name="searchProductName"
                   type="text"
                   className="form-control mb-3 fw-bold"
                 />
-                <label htmlFor="searchCategory" className="fw-bold">Product Category</label>
+                <label htmlFor="searchCategory" className="fw-bold">
+                  Product Category
+                </label>
                 <select
                   onChange={this.inputHandler}
                   name="searchCategory"
                   className="form-control fw-bold"
                 >
-                  <option value="" className="fw-bold">All Items</option>
-                  <option value="softcover" className="fw-bold">Softcover Notebook</option>
-                  <option value="spiral" className="fw-bold">Spiral Notebook</option>
-                  <option value="pop socket" className="fw-bold">Pop Socket</option>
+                  <option value="" className="fw-bold">
+                    All Items
+                  </option>
+                  <option value="softcover" className="fw-bold">
+                    Softcover Notebook
+                  </option>
+                  <option value="spiral" className="fw-bold">
+                    Spiral Notebook
+                  </option>
+                  <option value="pop socket" className="fw-bold">
+                    Pop Socket
+                  </option>
                 </select>
                 <button
                   onClick={this.searchBtnHandler}
@@ -211,17 +231,29 @@ class Home extends React.Component {
                 <strong>Sort Products</strong>
               </div>
               <div className="card-body">
-                <label htmlFor="sortBy" className="fw-bold">Sort by</label>
+                <label htmlFor="sortBy" className="fw-bold">
+                  Sort by
+                </label>
                 <select
                   onChange={this.inputHandler}
                   name="sortBy"
                   className="form-control fw-bold"
                 >
-                  <option value="" className="fw-bold">Default</option>
-                  <option value="lowPrice" className="fw-bold">Lowest Price</option>
-                  <option value="highPrice" className="fw-bold">Highest Price</option>
-                  <option value="az" className="fw-bold">A-Z</option>
-                  <option value="za" className="fw-bold">Z-A</option>
+                  <option value="" className="fw-bold">
+                    Default
+                  </option>
+                  <option value="lowPrice" className="fw-bold">
+                    Lowest Price
+                  </option>
+                  <option value="highPrice" className="fw-bold">
+                    Highest Price
+                  </option>
+                  <option value="az" className="fw-bold">
+                    A-Z
+                  </option>
+                  <option value="za" className="fw-bold">
+                    Z-A
+                  </option>
                 </select>
               </div>
             </div>

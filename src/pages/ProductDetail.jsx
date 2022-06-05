@@ -14,6 +14,7 @@ class ProductDetail extends React.Component {
   state = {
     // productData: menyimpan produk yg didapat sesuai dg id yg kita dpt dri route params kita
     productData: {
+      // so it has nothing to do with this productdata?  bthuis is product detail page it is separate.
       price: 0,
     },
 
@@ -49,7 +50,7 @@ class ProductDetail extends React.Component {
         swal({
           title: "There is some mistake in server",
           icon: "warning",
-          confirm: true
+          confirm: true,
         });
       });
   };
@@ -88,7 +89,7 @@ class ProductDetail extends React.Component {
             swal({
               title: "Item added successfully",
               icon: "success",
-              confirm: true
+              confirm: true,
             });
             // agar ketika klik add to cart dan berhasil, data di cart akan langsung bertambah
             // getCartData dipanggil setiap di mana terjadi perubahan pd cart
@@ -98,24 +99,24 @@ class ProductDetail extends React.Component {
             swal({
               title: "There is some mistake in server",
               icon: "warning",
-              confirm: true
+              confirm: true,
             });
           });
-        } else {
-          // Jika barang terkait belum ada di cart user, gunakan post
-          Axios.post(`${API_URL}/carts`, {
-            userId: this.props.userGlobal.id,
-            productId: this.state.productData.id,
-            price: this.state.productData.price,
-            productName: this.state.productData.productName,
-            productImage: this.state.productData.productImage,
-            quantity: this.state.quantity,
-          })
+      } else {
+        // Jika barang terkait belum ada di cart user, gunakan post
+        Axios.post(`${API_URL}/carts`, {
+          userId: this.props.userGlobal.id,
+          productId: this.state.productData.id,
+          price: this.state.productData.price,
+          productName: this.state.productData.productName,
+          productImage: this.state.productData.productImage,
+          quantity: this.state.quantity,
+        })
           .then(() => {
             swal({
               title: "Item added successfully",
               icon: "success",
-              confirm: true
+              confirm: true,
             });
             // agar ketika klik add to cart dan berhasil, data di cart akan langsung bertambah
             // getCartData dipanggil setiap di mana terjadi perubahan pd cart
@@ -125,16 +126,16 @@ class ProductDetail extends React.Component {
             swal({
               title: "There is some mistake in server",
               icon: "warning",
-              confirm: true
+              confirm: true,
             });
           });
-        }
-      });
-    };
+      }
+    });
+  };
 
   componentDidMount() {
     this.fetchProductData();
-
+    // window.location.pathname returns the path and filename of the current page
     console.log(window.location.pathname);
   }
 
@@ -174,7 +175,7 @@ class ProductDetail extends React.Component {
                     // decrement sesuai dg kondisi di dlm fungsi tsb
                     onClick={() => this.qtyBtnHandler("decrement")}
                     className="btn btn-warning text-white mx-4 fw-bold"
-                    >
+                  >
                     -
                   </button>
                   <span className="fs-4 fw-bold">{this.state.quantity}</span>
@@ -202,6 +203,7 @@ class ProductDetail extends React.Component {
   }
 }
 
+// way 2
 const withRouter = (WrappedComponent) => (props) => {
   const params = useParams();
 

@@ -7,14 +7,14 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import ReduxThunk from "redux-thunk";
 import rootReducer from "./redux/reducers";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // setup redux:
-
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+// is the variable of store can be named anything? yes but it must be passed to store prop/attr of Provider. U understand? yes
+const mystore = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={mystore}>
     <App />
   </Provider>,
   document.getElementById("root")

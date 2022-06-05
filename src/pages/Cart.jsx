@@ -157,7 +157,7 @@ class Cart extends React.Component {
           confirm: true,
         });
         // result.data: data yg sdh kita post ke db.json
-        // satu object di transaction item sama dengan object di carts pd db.json
+        // satu object di transactionItems sama dengan object di carts pd db.json
         result.data.transactionItems.forEach((val) => {
           // val.id: id dri sebuah cart
           this.deleteCartHandler(val.id);

@@ -13,33 +13,44 @@ class History extends React.Component {
     // utk menyimpan data transactionDetails dari fetchTransactions
     transactionDetails: [],
   };
-  
+
   fetchTransactions = () => {
     Axios.get(`${API_URL}/transaction`, {
       params: {
         userId: this.props.userGlobal.id,
       },
     })
-    .then((result) => {
-      // console.log(result.data);
-      this.setState({ transactionList: result.data });
-    })
-    .catch((err) => {
-      if(err.response.status == 404) return;
-      swal({
-        title: "There is some mistake in server",
-        icon: "warning",
-        confirm: true
+      .then((result) => {
+        // console.log(result.data);
+        this.setState({ transactionList: result.data });
+      })
+      .catch((err) => {
+        if (err.response.status == 404) return;
+        swal({
+          title: "There is some mistake in server",
+          icon: "warning",
+          confirm: true,
+        });
       });
-    });
   };
-  
-  // function utk melihat detail history transaksi
+
+  // function utk melihat detail history transaksi // here it's said to see the history of transactions
   // transactionDetails: sebuah array
   seeDetailsBtnHandler = (transactionDetails) => {
-    this.setState({ transactionDetails });
+  // seeDetailsBtnHandler = (trDetails) => {
+    // this is a short way to write it when both key and value of an object is same
+    this.setState({ transactionDetails }); // why we need to. I dont think it will do anything. u can try comment it, oh i understand, it will update the
+    // this.setState({ transactionDetails: trDetails });
+
+    /*
+    let mykey = 100;
+    let obj = {
+      mykey: mykey,  //this line
+      mykey   /// and this line both are same.
+    }
+    */
   };
-  
+
   renderTransactions = () => {
     return this.state.transactionList.map((val) => {
       return (
@@ -52,7 +63,7 @@ class History extends React.Component {
               // menggunakan parameter kosong di awal krn seeDetailsBtnHandler memiliki parameter di atas
               onClick={() => this.seeDetailsBtnHandler(val.transactionItems)}
               className="btn btn-warning fw-bold text-light"
-              >
+            >
               See Details
             </button>
           </td>
@@ -60,9 +71,9 @@ class History extends React.Component {
       );
     });
   };
-  
+
   renderTransactionDetailItems = () => {
-    return this.state.transactionDetails.map(val => {
+    return this.state.transactionDetails.map((val) => {
       return (
         <div className="d-flex my-2 flex-row justify-content-between align-items-center">
           <span className="font-weight-bold">
@@ -73,15 +84,17 @@ class History extends React.Component {
       );
     });
   };
-  
+
   componentDidMount() {
     this.fetchTransactions();
   }
-  
+
   render() {
     return (
       <div className="p-5 m-5 bg-light bg-gradient shadow-lg rounded bg-opacity-75">
-        <h1 className="text-warning p-5 fw-bold text-start">Transaction History</h1>
+        <h1 className="text-warning p-5 fw-bold text-start">
+          Transaction History
+        </h1>
         <div className="row mt-5">
           <div className="col-8 text-center">
             <table className="table table-hover border-warning">
@@ -93,7 +106,9 @@ class History extends React.Component {
                   <th className="text-light fs-5">Action</th>
                 </tr>
               </thead>
-              <tbody className="bg-light bg-opacity-75 fs-6 fw-bold">{this.renderTransactions()}</tbody>
+              <tbody className="bg-light bg-opacity-75 fs-6 fw-bold">
+                {this.renderTransactions()}
+              </tbody>
             </table>
           </div>
           <div className="col-4">
@@ -107,8 +122,8 @@ class History extends React.Component {
                   {this.renderTransactionDetailItems()}
                 </div>
               </div>
-              /* ketika kondisi false maka tdk memiliki length */
-            ) : null}
+            ) : /* ketika kondisi false maka tdk memiliki length */
+            null}
           </div>
         </div>
       </div>

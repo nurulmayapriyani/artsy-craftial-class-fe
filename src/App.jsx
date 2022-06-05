@@ -18,7 +18,6 @@ import { userKeepLogin, checkStorage } from "./redux/actions/user";
 import { getCartData } from "./redux/actions/cart";
 import "./assets/styles/gradientStyle.css";
 
-
 class App extends React.Component {
   componentDidMount() {
     // jika kita tdk dpt data userLocalStorage brrti user blm login
@@ -38,34 +37,37 @@ class App extends React.Component {
   }
 
   render() {
-    // kondisi ketika refresh dan masih login
+    // budu: look its like attribute, u can read it inside component by using this.props.myprop. okay hunny
+    // return <Reactivity myprop="Vale from app.jsx"></Reactivity>;
+    
+    // condition while refresh dan and still login
     if (this.props.userGlobal.storageIsChecked) {
       return (
         <div className="App ">
-            <BrowserRouter tag="div">
-              <MyNavbar />
-              <div className="flex-grow-1" >
-                <Routes>
-                  <Route element={<Login />} path="/login" />
-                  <Route element={<Register />} path="/register" />
-                  <Route element={<Admin />} path="/admin" />
-                  <Route element={<Cart />} path="/cart" />
-                  <Route element={<History />} path="/history" />
-                  <Route
-                    element={<ProductDetail />}
-                    path="/product-detail/:productId"
-                  />
-                  <Route element={<Home />} path="/" />
-                </Routes>
-              </div>
-              <Footer></Footer>
-            </BrowserRouter>
-            <img className="bg-image" src={background}></img>
+          <BrowserRouter tag="div">
+            <MyNavbar />
+            <div className="flex-grow-1">
+              <Routes>
+                <Route element={<Login />} path="/login" />
+                <Route element={<Register />} path="/register" />
+                <Route element={<Admin />} path="/admin" />
+                <Route element={<Cart />} path="/cart" />
+                <Route element={<History />} path="/history" />
+                <Route
+                  element={<ProductDetail />}
+                  path="/product-detail/:productId"
+                />
+                <Route element={<Home />} path="/" />
+              </Routes>
+            </div>
+            <Footer></Footer>
+          </BrowserRouter>
+          <img className="bg-image" src={background}></img>
         </div>
       );
     }
 
-    // kondisi ketika refresh tidak login
+    // condition while refresh but not login
     return <div>Loading...</div>;
   }
 }

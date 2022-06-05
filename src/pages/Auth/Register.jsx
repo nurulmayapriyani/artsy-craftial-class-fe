@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import Axios from "axios";
 import { API_URL } from "../../constants/API";
 import swal from "sweetalert";
+import axios from "axios";
 
 class Register extends React.Component {
   // to save value of form or input with the suitable name
@@ -29,7 +30,10 @@ class Register extends React.Component {
 
   // async is needed to use await inside the function
   registerHandler = async () => {
-    this.state.error = "";
+    this.setState({
+      error: "",
+    });
+    // sorry, we should always use setState to change the state
 
     // email can contain any character then '@' then any character then '.' and then any character again.
     if (!this.state.email.match(/.+@.+[.].+/)) {
@@ -69,8 +73,9 @@ class Register extends React.Component {
           return;
         }
       }
+      // catch code is executed if any line inside try has error.
     } catch (err) {
-      console.log(err);
+      console.log("Internet not working: ", err); // u can try later without internet, it will execute code inside catch.
       return;
     }
 
@@ -81,6 +86,7 @@ class Register extends React.Component {
     if (this.props.userGlobal.id) {
       return <Navigate to="/" />;
     }
+
     return (
       <div className="container-fluid">
         <div className="row">
@@ -165,8 +171,8 @@ export const registerUser = ({ fullName, username, email, password }) => {
       password,
       role: "user",
     })
+      // ketika kita post ke API json server, isinya result.data: data yg dicreate API json server db.json maka dari itu id muncul
       .then((result) => {
-        // ketika kita post ke API json server, isinya result.data: data yg dicreate API json server db.json maka dari itu id muncul
         delete result.data.password;
         // dispatch ke reducer dg sebuah user login dan payloadnya semua yg di dlm axios.post
         dispatch({

@@ -46,14 +46,18 @@ class Admin extends React.Component {
     Axios.get(`${API_URL}/products`)
       .then((result) => {
         let maxPage = Math.ceil(result.data.length / this.state.itemPerPage);
-        this.setState({ productList: result.data, maxPage: maxPage, filterProductList: result.data });
+        this.setState({
+          productList: result.data,
+          maxPage: maxPage,
+          filterProductList: result.data,
+        });
       })
       .catch((err) => {
         console.log(err);
         swal({
           title: "There is some mistake in server",
           icon: "warning",
-          confirm: true
+          confirm: true,
         });
       });
   };
@@ -78,21 +82,22 @@ class Admin extends React.Component {
 
   // copied the function from home
   paginationHandler = (page) => {
-    if ((page <= this.state.maxPage) && (page >= 1)) {
+    if (page <= this.state.maxPage && page >= 1) {
       this.setState({ page: page });
     }
   };
 
   filterHandler = () => {
-    let filterProducts = this.state.productList.filter( 
-      p => p.productName.toLowerCase().includes(this.state.searchProductName.toLowerCase())
+    let filterProducts = this.state.productList.filter((p) =>
+      p.productName
+        .toLowerCase()
+        .includes(this.state.searchProductName.toLowerCase())
     );
     this.setState({
       filterProductList: filterProducts,
-      page: 1
+      page: 1,
     });
-  }
-
+  };
 
   // function utk tombol save ketika edit produk
   saveBtnHandler = () => {
@@ -118,7 +123,7 @@ class Admin extends React.Component {
         swal({
           title: "There is some mistake in server",
           icon: "warning",
-          confirm: true
+          confirm: true,
         });
       });
   };
@@ -127,10 +132,10 @@ class Admin extends React.Component {
   deleteBtnHandler = async (deleteId) => {
     // await will make code wait here until there is response in confirmDelete. So both cancel and delete buttons will works
     const confirmDelete = await swal({
-        title: "Are you sure to delete this?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true
+      title: "Are you sure to delete this?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
     });
 
     if (confirmDelete) {
@@ -145,128 +150,145 @@ class Admin extends React.Component {
           swal({
             title: "There is some mistake in server",
             icon: "warning",
-            confirm: true
+            confirm: true,
           });
         });
     } else {
       swal({
         title: "Delete Canceled",
         icon: "info",
-        confirm: true
+        confirm: true,
       });
     }
   };
 
   renderProducts = () => {
-
     const beginningIndex = (this.state.page - 1) * this.state.itemPerPage;
 
     // slice: menentukan index produk ke berapa saja yg ditampilkan pada setiap pagenya
-    return this.state.filterProductList.slice(beginningIndex, beginningIndex + this.state.itemPerPage).map((val) => {
-      // jika barang sdg diedit maka yg ditampilkan berupa form yg bisa diinput
-      if (val.id === this.state.editId) {
+    return this.state.filterProductList
+      .slice(beginningIndex, beginningIndex + this.state.itemPerPage)
+      .map((val) => {
+        // jika barang sdg diedit maka yg ditampilkan berupa form yg bisa diinput
+        if (val.id === this.state.editId) {
+          return (
+            <tr>
+              <td>{val.id}</td>
+              <td>
+                <input
+                  value={this.state.editProductName}
+                  onChange={this.inputHandler}
+                  type="text"
+                  className="form-control fw-bold"
+                  name="editProductName"
+                />
+              </td>
+              <td>
+                <input
+                  value={this.state.editPrice}
+                  onChange={this.inputHandler}
+                  type="number"
+                  className="form-control fw-bold"
+                  name="editPrice"
+                />
+              </td>
+              <td>
+                <input
+                  value={this.state.editProductImage}
+                  onChange={this.inputHandler}
+                  type="text"
+                  className="form-control fw-bold"
+                  name="editProductImage"
+                />
+              </td>
+              <td>
+                <input
+                  value={this.state.editDescription}
+                  onChange={this.inputHandler}
+                  type="text"
+                  className="form-control fw-bold"
+                  name="editDescription"
+                />
+              </td>
+              <td>
+                <select
+                  value={this.state.editCategory}
+                  onChange={this.inputHandler}
+                  name="editCategory"
+                  className="form-control fw-bold"
+                >
+                  <option value="" className="fw-bold">
+                    All Items
+                  </option>
+                  <option value="softcover" className="fw-bold">
+                    Softcover Notebook
+                  </option>
+                  <option value="spiral" className="fw-bold">
+                    Spiral Notebook
+                  </option>
+                  <option value="pop socket" className="fw-bold">
+                    Pop Socket
+                  </option>
+                </select>
+              </td>
+              <td>
+                <button
+                  onClick={this.saveBtnHandler}
+                  className="btn btn-success fw-bold"
+                >
+                  Save
+                </button>
+              </td>
+              <td>
+                <button
+                  onClick={this.cancelEdit}
+                  className="btn btn-danger fw-bold"
+                >
+                  Cancel
+                </button>
+              </td>
+            </tr>
+          );
+        }
+
+        // framework in admin page
         return (
           <tr>
-            <td>{val.id}</td>
-            <td>
-              <input
-                value={this.state.editProductName}
-                onChange={this.inputHandler}
-                type="text"
-                className="form-control fw-bold"
-                name="editProductName"
-              />
+            <td className="align-middle">{val.id}</td>
+            <td className="align-middle">{val.productName}</td>
+            <td className="align-middle">
+              Rp{val.price.toLocaleString("id-ID")}
             </td>
             <td>
-              <input
-                value={this.state.editPrice}
-                onChange={this.inputHandler}
-                type="number"
-                className="form-control fw-bold"
-                name="editPrice"
+              <img
+                className="admin-product-image"
+                src={val.productImage}
+                alt=""
               />
             </td>
-            <td>
-              <input
-                value={this.state.editProductImage}
-                onChange={this.inputHandler}
-                type="text"
-                className="form-control fw-bold"
-                name="editProductImage"
-              />
-            </td>
-            <td>
-              <input
-                value={this.state.editDescription}
-                onChange={this.inputHandler}
-                type="text"
-                className="form-control fw-bold"
-                name="editDescription"
-              />
-            </td>
-            <td>
-              <select
-                value={this.state.editCategory}
-                onChange={this.inputHandler}
-                name="editCategory"
-                className="form-control fw-bold"
+            <td className="align-middle">{val.description}</td>
+            <td className="align-middle">{val.category}</td>
+            <td className="align-middle">
+              {/* editToggle menerima parameter yaitu editData dri produk jadi pada onClick hrs dibungkus dg anonymous function supaya kita bisa kasih parameter yaitu val*/}
+              <button
+                // val mengirimkan semua key dlm satu object ke editToggle
+                onClick={() => this.editToggle(val)}
+                className="btn btn-warning text-light fw-bold"
               >
-                <option value="" className="fw-bold">All Items</option>
-                <option value="softcover" className="fw-bold">Softcover Notebook</option>
-                <option value="spiral" className="fw-bold">Spiral Notebook</option>
-                <option value="pop socket" className="fw-bold">Pop Socket</option>
-              </select>
-            </td>
-            <td>
-              <button onClick={this.saveBtnHandler} className="btn btn-success fw-bold">
-                Save
+                Edit
               </button>
             </td>
-            <td>
-              <button onClick={this.cancelEdit} className="btn btn-danger fw-bold">
-                Cancel
+            <td className="align-middle">
+              <button
+                onClick={() => this.deleteBtnHandler(val.id)}
+                className="btn btn-danger fw-bold"
+              >
+                Delete
               </button>
             </td>
           </tr>
         );
-      }
-
-      // framework in admin page
-      return (
-        <tr>
-          <td className="align-middle">{val.id}</td>
-          <td className="align-middle">{val.productName}</td>
-          <td className="align-middle">Rp{val.price.toLocaleString("id-ID")}</td>
-          <td>
-            <img
-              className="admin-product-image"
-              src={val.productImage}
-              alt=""
-            />
-          </td>
-          <td className="align-middle">{val.description}</td>
-          <td className="align-middle">{val.category}</td>
-          <td className="align-middle">
-            {/* editToggle menerima parameter yaitu editData dri produk jadi pada onClick hrs dibungkus dg anonymous function supaya kita bisa kasih parameter yaitu val*/}
-            <button
-              // val mengirimkan semua key dlm satu object ke editToggle
-              onClick={() => this.editToggle(val)}
-              className="btn btn-warning text-light fw-bold"
-            >
-              Edit
-            </button>
-          </td>
-          <td className="align-middle">
-            <button
-              onClick={() => this.deleteBtnHandler(val.id)}
-              className="btn btn-danger fw-bold"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      );
-    });
+      });
   };
 
   // function utk menambah produk baru
@@ -296,33 +318,33 @@ class Admin extends React.Component {
         swal({
           title: "There is some mistake in server",
           icon: "warning",
-          confirm: true
+          confirm: true,
         });
       });
   };
 
-  inputHandler = (event) => {
-    // value: storage of input users from admin page
-    // name: to recognize the incoming values from which input
-    const { name, value } = event.target;
+  // inputHandler = (event) => {
+  //   // value: storage of input users from admin page
+  //   // name: to recognize the incoming values from which input
+  //   const { name, value } = event.target;
 
-    // name using square brackets to make the objects sent to setState is dynamic
-    this.setState({ [name]: value });
-  };
+  //   // name using square brackets to make the objects sent to setState is dynamic
+  //   this.setState({ [name]: value });
+  // };
 
   // utk membuat fetchProducts trigger ketika masuk admin page tanpa mencet apapun
   componentDidMount() {
     this.fetchProducts();
   }
 
-
-  inputHandler = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
+  inputHandler = (ev) => {
+    // event.target will give the input element on which we used inputHandler.. so we cant give event any named? we can give it any name, it is positional arguemtn.
+    // when any event is called bowser passes the event object to the function in first parameter. event object contains information about the event. it is passed in onclick, ozninput, onmouseover etc. Almost all events pass an event parameter, we can use it if we want. Here we are using it to store the value inside state with same name as name of input tag. so the builtin only target? b cs we can named event right? yes event is parameter name we can name it anything but target is property of the object sent by browser so we cant change it.
+    const name = ev.target.name;
+    const value = ev.target.value;
 
     this.setState({ [name]: value });
   };
-
 
   render() {
     // jika login sbg user maka direturn to home page
@@ -335,22 +357,28 @@ class Admin extends React.Component {
         <div className="row">
           <div className="col-12 text-center bg-light bg-gradient shadow-lg rounded bg-opacity-75">
             <h1 className="text-warning p-5 fw-bold">Product Lists</h1>
-            <div className="mx-auto d-flex align-items-start" style={{
-                  width: "300px"
-                }}>
-                  <input
-                        onChange={this.inputHandler}
-                        name="searchProductName"
-                        type="text"
-                        style={{
-                          paddingTop: "5px",
-                          paddingButton: "5px"
-                        }}
-                        className="form-control mb-3 fw-bold"
-                      />
-                  <button 
-                      className="btn btn-warning text-light fw-bold"
-                      onClick={this.filterHandler}>Filter</button>
+            <div
+              className="mx-auto d-flex align-items-start"
+              style={{
+                width: "300px",
+              }}
+            >
+              <input
+                onChange={this.inputHandler}
+                name="searchProductName"
+                type="text"
+                style={{
+                  paddingTop: "5px",
+                  paddingButton: "5px",
+                }}
+                className="form-control mb-3 fw-bold"
+              />
+              <button
+                className="btn btn-warning text-light fw-bold"
+                onClick={this.filterHandler}
+              >
+                Filter
+              </button>
             </div>
             <table className="table table-hover border-warning">
               <thead className="thead-light">

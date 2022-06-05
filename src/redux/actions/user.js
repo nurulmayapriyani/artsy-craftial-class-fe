@@ -68,18 +68,20 @@ export const loginUser = ({ username, password }) => {
   };
 };
 
-// function logoutUser tdk memerlukan proses asynchronous jd tdk harus return sebuah function
+// function logoutUser no need asynchronous process so it's not must return a function
 export const logoutUser = () => {
-  // jika logout harus remove localStorage
+  // if logout must remove localStorage
+  // if we dont do it then data for the user will keep stored inside local storeage even after logout
+  // we used localstoreage so user stays logged in even if we refresh page or close and reopen tab.
   localStorage.removeItem("userDataEmmerce");
 
   return {
-    // USER_LOGOUT: sesuai yg ada di reducer
+    // USER_LOGOUT: based on in reducer
     type: "USER_LOGOUT",
   };
 };
 
-// userData: data user yg kita dptkan dari localStorage
+// userData: data user yg kita dptkan dari userLocalStorage
 export const userKeepLogin = (userData) => {
   // menerima proses asynchronous
   return (dispatch) => {

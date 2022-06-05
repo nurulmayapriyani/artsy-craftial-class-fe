@@ -12,9 +12,12 @@ class Login extends React.Component {
   };
 
   inputHandler = (event) => {
+    // value: storage of input users from login page
     const value = event.target.value;
+    // name: to recognize the incoming values from which input
     const name = event.target.name;
 
+    // name using square brackets to make the objects sent to setState is dynamic
     this.setState({ [name]: value });
   };
 

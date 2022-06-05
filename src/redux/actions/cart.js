@@ -24,7 +24,7 @@ export const getCartData = (userId) => {
           // sesuai dari nama dari case di cart reducer
           type: "FILL_CART",
           // result.data menyimpan cartnya user (array)
-          payload: result.data,
+          payload: result.data,   // this is the payload. 
         });
       })
       .catch(() => {
