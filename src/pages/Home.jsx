@@ -182,7 +182,7 @@ class Home extends React.Component {
     return (
       <div className="container-fluid">
         <div className="row pt-5">
-          <div className="col-auto">
+          <div className="col-auto" style={{paddingLeft: "5%"}}>
             <div className="card filsort-card">
               <div className="card-header bg-warning text-light fs-5">
                 <strong>Filter Products</strong>
@@ -196,6 +196,7 @@ class Home extends React.Component {
                   name="searchProductName"
                   type="text"
                   className="form-control mb-3 fw-bold"
+                  placeholder="Search..."
                 />
                 <label htmlFor="searchCategory" className="fw-bold">
                   Product Category
@@ -257,8 +258,9 @@ class Home extends React.Component {
                 </select>
               </div>
             </div>
-            <div className="card filsort-card mt-4 d-flex justify-content-center flex-row">
+            <div className="card filsort-card mt-4 d-flex justify-content-center flex-row" style={{backgroundColor: "transparent", border: "none"}}>
               {/* first page */}
+              {this.state.maxPage > 1 ? (
               <a
                 className="btn btn-warning text-light fw-bold"
                 style={{
@@ -268,6 +270,7 @@ class Home extends React.Component {
               >
                 {"<<"}
               </a>
+              ):null}
 
               {/* previous page 2 */}
               {/* page: current page*/}
@@ -323,6 +326,7 @@ class Home extends React.Component {
               ) : null}
 
               {/* last page */}
+              {this.state.maxPage > 1 ? (
               <a
                 className="btn btn-warning text-light fw-bold"
                 style={{
@@ -332,10 +336,11 @@ class Home extends React.Component {
               >
                 {">>"}
               </a>
+              ): null}
             </div>
           </div>
           <div className="col">
-            <div className="d-flex flex-wrap flex-row">
+            <div className="d-flex flex-wrap flex-row justify-content-center">
               {/* Render products here */}
               {this.renderProducts()}
             </div>

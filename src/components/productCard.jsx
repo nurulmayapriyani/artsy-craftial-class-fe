@@ -18,7 +18,6 @@ class ProductCard extends React.Component {
         productId: this.props.productData.id, // we give product id so it will filter only this product id and user. there should be only one product with a product id and userid
       },
     }).then((result) => { // same like this result.
-      console.log(result);
       // Jika barangnya sudah ada di cart user
       if (result.data.length) { // this checks if length is not zero. okk i ge it
         // hanya bisa ambil id {result.data[0].id} data cart dri qty barang yg mau diedit karena API msh pakai json.server, tdk bisa dri userid & productid karena blm buat API sendiri. Id yg diambil di sini tergantung dari userId & productId apa yg diperoleh dari data cart (yg terdapat di dlm params di atas)
@@ -93,15 +92,17 @@ class ProductCard extends React.Component {
             >
               {/* productName: dari db.json */}
               {/* productData: dari home page */}
-              <div className="fw-bold">
+              <div className="fw-bold" style={{textAlign: "left", paddingLeft: 5}}>
                 {this.props.productData.productName}
               </div>
             </Link>
             {/* price: dari db.json */}
             {/* productData: dari home page */}
+            <div style={{textAlign: "left", paddingLeft: 5}}>
             <span className="text-muted fw-bold">
               Rp{this.props.productData.price.toLocaleString("id-ID")}
             </span>
+            </div>
           </div>
           <div className="d-flex flex-row justify-content-end">
             <button

@@ -68,7 +68,7 @@ class Admin extends React.Component {
     this.setState({
       editId: editData.id,
       editProductName: editData.productName,
-      editPrice: editData.price.toLocaleString("id-ID"),
+      editPrice: editData.price,
       editProductImage: editData.productImage,
       editDescription: editData.description,
       editCategory: editData.category,
@@ -95,6 +95,7 @@ class Admin extends React.Component {
     );
     this.setState({
       filterProductList: filterProducts,
+      maxPage: Math.ceil(filterProducts.length / this.state.itemPerPage),
       page: 1,
     });
   };
@@ -220,13 +221,13 @@ class Admin extends React.Component {
                   <option value="" className="fw-bold">
                     All Items
                   </option>
-                  <option value="softcover" className="fw-bold">
+                  <option value="Softcover Notebook" className="fw-bold">
                     Softcover Notebook
                   </option>
-                  <option value="spiral" className="fw-bold">
+                  <option value="Spiral Notebook" className="fw-bold">
                     Spiral Notebook
                   </option>
-                  <option value="pop socket" className="fw-bold">
+                  <option value="Pop Socket" className="fw-bold">
                     Pop Socket
                   </option>
                 </select>
@@ -257,7 +258,7 @@ class Admin extends React.Component {
             <td className="align-middle">{val.id}</td>
             <td className="align-middle">{val.productName}</td>
             <td className="align-middle">
-              Rp{val.price.toLocaleString("id-ID")}
+              Rp{val.price?.toLocaleString("id-ID")}
             </td>
             <td>
               <img
@@ -356,7 +357,7 @@ class Admin extends React.Component {
       <div className="p-5">
         <div className="row">
           <div className="col-12 text-center bg-light bg-gradient shadow-lg rounded bg-opacity-75">
-            <h1 className="text-warning p-5 fw-bold">Product Lists</h1>
+            <h1 className="text-dark p-5 fw-bold">Product Lists</h1>
             <div
               className="mx-auto d-flex align-items-start"
               style={{
@@ -370,6 +371,7 @@ class Admin extends React.Component {
                 style={{
                   paddingTop: "5px",
                   paddingButton: "5px",
+                  marginRight: "10px"
                 }}
                 className="form-control mb-3 fw-bold"
               />
@@ -408,6 +410,7 @@ class Admin extends React.Component {
                       name="addProductName"
                       type="text"
                       className="form-control fw-bold"
+                      placeholder="Enter product name"
                     />
                   </td>
                   <td>
@@ -426,6 +429,7 @@ class Admin extends React.Component {
                       name="addProductImage"
                       type="text"
                       className="form-control fw-bold"
+                      placeholder="Enter product image path"
                     />
                   </td>
                   <td>
@@ -435,6 +439,7 @@ class Admin extends React.Component {
                       name="addDescription"
                       type="text"
                       className="form-control fw-bold"
+                      placeholder="Enter product description"
                     />
                   </td>
                   <td>
@@ -443,16 +448,16 @@ class Admin extends React.Component {
                       name="addCategory"
                       className="form-control fw-bold"
                     >
-                      <option value="">All Items</option>
-                      <option value="softcover">Softcover Notebook</option>
-                      <option value="spiral">Spiral Notebook</option>
-                      <option value="pop socket">Pop Socket</option>
+                      <option id="placeholderselect" className="fw-bold" value="">Choose Category</option>
+                      <option className="fw-bold" value="Softcover Notebook">Softcover Notebook</option>
+                      <option className="fw-bold" value="Spiral Notebook">Spiral Notebook</option>
+                      <option className="fw-bold" value="Pop Socket">Pop Socket</option>
                     </select>
                   </td>
                   <td colSpan="2">
                     <button
                       onClick={this.addNewProduct}
-                      className="btn btn-warning text-light fw-bold"
+                      className="btn btn-light text-dark fw-bold"
                     >
                       Add Product
                     </button>
@@ -461,8 +466,9 @@ class Admin extends React.Component {
               </tfoot>
             </table>
             {/* copied the div from home */}
-            <div className="card mx-auto mb-3 filsort-card d-flex justify-content-center flex-row">
+            <div className="card mx-auto mb-3 filsort-card d-flex justify-content-center flex-row" style={{backgroundColor: "transparent", border: "none"}}>
               {/* first page */}
+              {this.state.maxPage > 1 ? (
               <a
                 className="btn btn-warning text-light fw-bold"
                 style={{
@@ -473,6 +479,7 @@ class Admin extends React.Component {
               >
                 {"<<"}
               </a>
+              ): null}
 
               {/* previous page 2 */}
               {/* page: current page*/}
@@ -528,16 +535,18 @@ class Admin extends React.Component {
               ) : null}
 
               {/* last page */}
+              {this.state.maxPage > 1 ? (
               <a
                 className="btn btn-warning text-light fw-bold"
                 style={{
                   marginLeft: "auto",
                 }}
-                // disabled={this.state.page === this.state.maxPage} not working lol
                 onClick={() => this.paginationHandler(this.state.maxPage)}
               >
                 {">>"}
               </a>
+              ): null}
+
             </div>
           </div>
         </div>

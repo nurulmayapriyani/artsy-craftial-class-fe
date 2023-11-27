@@ -56,7 +56,7 @@ class History extends React.Component {
       return (
         <tr>
           <td>{val.transactionDate}</td>
-          <td>{val.transactionItems.length} Items(s)</td>
+          <td>{val.transactionItems.length} {val.transactionItems.length > 1 ? "Item(s)" : "Item"}</td>
           <td>Rp{val.totalPrice.toLocaleString("id-ID")}</td>
           <td>
             <button
@@ -92,7 +92,7 @@ class History extends React.Component {
   render() {
     return (
       <div className="p-5 m-5 bg-light bg-gradient shadow-lg rounded bg-opacity-75">
-        <h1 className="text-warning p-5 fw-bold text-start">
+        <h1 className="text-dark p-5 fw-bold text-start">
           Transaction History
         </h1>
         <div className="row mt-5">

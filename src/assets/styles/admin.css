@@ -1,3 +1,7 @@
 .admin-product-image {
     height: 125px;
   }
+
+#placeholderselect {
+  display: none;
+}

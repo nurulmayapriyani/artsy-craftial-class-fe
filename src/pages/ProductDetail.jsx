@@ -136,7 +136,7 @@ class ProductDetail extends React.Component {
   componentDidMount() {
     this.fetchProductData();
     // window.location.pathname returns the path and filename of the current page
-    console.log(window.location.pathname);
+    // console.log(window.location.pathname);
   }
 
   render() {
@@ -150,40 +150,44 @@ class ProductDetail extends React.Component {
             </div>
           ) : (
             // jika this.state.productNotFound adalah false
-            <div className="row mt-5 bg-light bg-gradient shadow-lg rounded bg-opacity-75">
-              <div className="col-4">
+            <div className="d-flex justify-content-center row mt-5 bg-light bg-gradient shadow-lg rounded bg-opacity-75">
+              <div className="col-5">
                 <img
                   className="mt-5 pb-5"
                   style={{ width: "100%" }}
                   src={this.state.productData.productImage}
-                  alt=""
+                  alt="product image"
                 />
               </div>
-              <div className="col-6 d-flex flex-column justify-content-center">
+              <div className="col-7 d-flex pt-2 pb-2 flex-column justify-content-center">
                 <h4 className="fw-bold pb-3">
                   {this.state.productData.productName}
                 </h4>
-                <h5 className="fw-bold pb-3">
+                <h5 className="fw-bold pb-3 text-secondary">
                   Rp {this.state.productData.price.toLocaleString("id-ID")}
                 </h5>
+                <div style={{textAlign: "left"}}>
+                <h5 className="fw-bold pt-3">Description:</h5>
                 <p className="fw-bold fs-5 pb-5">
                   {this.state.productData.description}
                 </p>
-                <div className="d-flex flex-row align-items-center">
+                </div>
+                <div className="d-flex flex-row">
+                  <span className="fw-bold fs-5" style={{paddingRight: 10}}>Qty:</span>
                   <button
                     // terdapat tanda kurung dg parameter kosong krn fungsi yg dipanggil menerima parameter
                     // decrement sesuai dg kondisi di dlm fungsi tsb
                     onClick={() => this.qtyBtnHandler("decrement")}
-                    className="btn btn-warning text-white mx-4 fw-bold"
+                    className="btn btn-warning text-white fw-bold"
                   >
                     -
                   </button>
-                  <span className="fs-4 fw-bold">{this.state.quantity}</span>
+                  <span className="fs-4 fw-bold px-3 ">{this.state.quantity}</span>
                   <button
                     // terdapat tanda kurung dg parameter kosong krn fungsi yg dipanggil menerima parameter
                     // increment sesuai dg kondisi di dlm fungsi tsb
                     onClick={() => this.qtyBtnHandler("increment")}
-                    className="btn btn-warning text-white mx-4 fw-bold"
+                    className="btn btn-warning text-white fw-bold"
                   >
                     +
                   </button>

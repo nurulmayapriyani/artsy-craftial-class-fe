@@ -7,7 +7,6 @@ import swal from "sweetalert";
 // function utk mengambil data cart user dan disimpan di dlm redux
 // userId: supaya kita tau dia mau dapetin cartnya user mana
 export const getCartData = (userId) => {
-  console.log(userId);
   // terdapat proses acyncronus jd mereturn sebuah function
   return (dispatch) => {
     Axios.get(`${API_URL}/carts`, {

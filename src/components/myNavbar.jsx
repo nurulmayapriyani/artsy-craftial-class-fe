@@ -40,7 +40,7 @@ class MyNavbar extends React.Component {
     // }
 
     return (
-      <Navbar color="body" light>
+      <Navbar color="body" light style={{padding: 0}}>
         {/* to make brand send us to home page when it's clicked */}
         <NavbarBrand
           tag={Link}
@@ -52,13 +52,13 @@ class MyNavbar extends React.Component {
             // to make written of "Logo" show up when the logo pict can't be show up
             alt="Logo"
             style={{
-              height: "60px",
+              height: "50px",
               marginRight: "10px",
             }}
           />
           <span className="fw-bold fs-4">Artsy Craftial</span>
         </NavbarBrand>
-        <Nav>
+        <Nav style={{width: "22%", justifyContent: "end"}}>
           {/* if condition is true run the task inside react fragment*/}
           {this.props.userGlobal.username ? (
             <>
@@ -67,34 +67,35 @@ class MyNavbar extends React.Component {
                 style={{
                   marginTop: "auto",
                   marginBottom: "auto",
+                  padding: "0.5rem 1rem"
                 }}
               >
-                <NavbarText nav className="text-warning fs-4 fw-bold">
+                <NavbarText nav="true" className="text-warning fs-5 fw-bold">
                   Hello, {this.props.userGlobal.username}
                 </NavbarText>
               </NavItem>
+              {this.props.userGlobal.role !== "admin" ? (
               <NavItem
                 style={{
                   marginTop: "auto",
                   marginBottom: "auto",
-                  marginLeft: "10px",
+                  padding: "0.5rem 1rem",
                 }}
               >
-                {this.props.userGlobal.role !== "admin" ? (
                   <Link
                     to="/cart"
-                    className="text-decoration-none text-warning fw-bold fs-4"
+                    className="text-decoration-none text-warning fw-bold fs-5"
                   >
                     <FaShoppingCart />
                     {/* cartList is from cart.js reducer */}(
                     {this.props.cartGlobal.cartList.length})
                   </Link>
-                ) : null}
               </NavItem>
+                ) : null}
               {/* nav to declare if the dropdown is in navbar */}
               <UncontrolledDropdown nav inNavbar>
                 {/* caret to give a small arrow */}
-                <DropdownToggle nav caret className="text-warning fs-4 fw-bold">
+                <DropdownToggle nav caret className="text-warning fs-5 fw-bold">
                   Pages
                 </DropdownToggle>
                 {/* to make align dropdown menu move to left so they can compeletely show not cut*/}

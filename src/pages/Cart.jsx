@@ -178,7 +178,7 @@ class Cart extends React.Component {
   render() {
     return (
       <div className="p-5 m-5 text-center bg-light bg-gradient shadow-lg rounded bg-opacity-75">
-        <h1 className="text-warning p-5 fw-bold text-start">Shopping Cart</h1>
+        <h1 className="text-dark p-5 fw-bold text-start">Shopping Cart</h1>
         <div className="row mt-3">
           <div className="col-9 text-center">
             <table className="table table-hover border-warning">
@@ -199,8 +199,9 @@ class Cart extends React.Component {
                 <tr>
                   <td colSpan="6">
                     <button
+                      disabled={this.props.cartGlobal.cartList.length === 0 ? true : false}
                       onClick={this.checkoutModeToggle}
-                      className="btn btn-warning text-light fw-bold"
+                      className="btn btn-light text-dark fw-bold"
                     >
                       Checkout
                     </button>
@@ -210,7 +211,7 @@ class Cart extends React.Component {
             </table>
           </div>
           {/* ketika isCheckoutMode true, berarti ditampilkan */}
-          {this.state.isCheckoutMode ? (
+          {this.state.isCheckoutMode && this.props.cartGlobal.cartList.length !== 0 ? (
             <div className="col-3">
               {/* form checkout */}
               <div className="card">
@@ -233,13 +234,14 @@ class Cart extends React.Component {
                 </div>
                 <div className="card-body border-top bg-light bg-opacity-75">
                   <label htmlFor="recipientName" className="fw-bold">
-                    Recipient Name
+                    Full Name
                   </label>
                   <input
                     onChange={this.inputHandler}
                     type="text"
                     className="form-control mb-3 fw-bold"
                     name="recipientName"
+                    placeholder="Enter recipient name"
                   />
                   <label htmlFor="address" className="fw-bold">
                     Address
@@ -249,6 +251,7 @@ class Cart extends React.Component {
                     type="text"
                     className="form-control fw-bold"
                     name="address"
+                    placeholder="Enter recipient address"
                   />
                 </div>
                 <div className="card-footer bg-warning bg-opacity-25">
@@ -258,10 +261,11 @@ class Cart extends React.Component {
                     name="payment"
                     className="form-control mx-1 mb-2 fw-bold"
                     type="number"
+                    placeholder="Enter amount to pay"
                   />
                   <button
                     onClick={this.payBtnHandler}
-                    className="btn btn-warning mx-1 text-light fw-bold"
+                    className="btn btn-light mx-1 text-dark fw-bold"
                   >
                     Pay
                   </button>
