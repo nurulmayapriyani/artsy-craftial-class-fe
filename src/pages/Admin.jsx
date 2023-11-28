@@ -374,6 +374,7 @@ class Admin extends React.Component {
                   marginRight: "10px"
                 }}
                 className="form-control mb-3 fw-bold"
+                placeholder="Search..."
               />
               <button
                 className="btn btn-warning text-light fw-bold"

@@ -67,6 +67,10 @@ class ProductDetail extends React.Component {
 
   // function to add qty of certain product to cart
   addToCartHandler = () => {
+    if(this.props.userGlobal.id === 0){
+      window.location.href = "/login";
+    }
+
     Axios.get(`${API_URL}/carts`, {
       // cari data spesifik, cek apakah user dg id tsb sdh memiliki barang dg id terkait di dlm cartnya
       params: {
